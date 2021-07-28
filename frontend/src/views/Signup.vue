@@ -1,6 +1,6 @@
 <template>
   <div class="signup">
-    <form>
+    <form id="form">
         <h1>Inscription</h1>
         <Input id='username' type='text' text='Pseudo'/>
         <Input id='email' type='email' text='E-mail'/>
@@ -23,8 +23,25 @@ export default {
     }, 
     methods: {
     signup() {
-      console.log('Singup ok');
-      window.location.href='#/';
+      const form = document.getElementById('form')
+      const user = {
+        username: form.username.value,
+        email: form.email.value,
+        password: form.password.value
+      }
+      fetch("http://localhost:3000/api/auth/signup", {
+        method: "POST",
+        headers: { 
+            'Accept': 'application/json', 
+            'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify(user)
+        })
+        .then(function(res) {
+          if (!res.ok) {
+            throw new Error(res.status);
+          }
+        })
     }
   },
 }

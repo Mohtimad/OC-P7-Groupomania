@@ -1,25 +1,22 @@
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const tokenConfig = require('../token-config')
-
-function encryptMail(email) {
-  let shaSum = crypto.createHash('sha256');
-  let encyptedEmail = shaSum.update(email).digest('hex');
-  return encyptedEmail;
-}
+const sequelize = require("../config/db.config");
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
-        const encyptedEmail = encryptMail(req.body.email);
-        const user = new User({
-          email: encyptedEmail,
-          password: hash
-        });
-        user.save()
-          .then(() => res.status(201).json({ message: 'User created !' }))
-          .catch(() => res.status(400).json({ error: 'Email already used!' }));
+        const user = {
+          email: req.body.email,
+          password: hash,
+          username: req.body.username
+        };
+        sequelize.query(`INSERT INTO Users VALUES (NULL, '${user.password}', '${user.email}', '${user.username}');`)
+        .then(([results, metadata]) => {
+          console.log(results);
+          res.status(201).json({ message: 'User created !' });
+        })
+        .catch(() => res.status(400).json({ error: 'Email already used!' }));
       })
       .catch(error => res.status(500).json({ error }));
   };

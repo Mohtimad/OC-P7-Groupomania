@@ -16,8 +16,13 @@ export default {
   components: {
     Header,
     Main,
-    Footer
-  }
+    Footer,
+  },
+  data() {
+    return {
+      login: true
+    }
+  },
 }
 </script>
 

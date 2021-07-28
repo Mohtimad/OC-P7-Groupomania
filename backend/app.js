@@ -2,7 +2,6 @@ const express = require('express');
 const rateLimit = require("express-rate-limit");
 const userRoutes = require('./routes/user');
 const path = require('path');
-
 const app = express();
 
 app.use((req, res, next) => {
@@ -12,21 +11,21 @@ app.use((req, res, next) => {
     next();
   });
   
-const createAccountLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  max: 10,
-  message:
-    "Too many accounts created from this IP, please try again after an hour"
-});
-app.use('/api/auth/signup', createAccountLimiter)
-
-const loginAccountLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000,
-  max: 10,
-  message:
-    "Too many connection attempts from this IP address, please try again after five minutes"
-});
-app.use('/api/auth/login', loginAccountLimiter)
+//const createAccountLimiter = rateLimit({
+//  windowMs: 60 * 60 * 1000,
+//  max: 10,
+//  message:
+//    "Too many accounts created from this IP, please try again after an hour"
+//});
+//app.use('/api/auth/signup', createAccountLimiter)
+//
+//const loginAccountLimiter = rateLimit({
+//  windowMs: 5 * 60 * 1000,
+//  max: 10,
+//  message:
+//    "Too many connection attempts from this IP address, please try again after five minutes"
+//});
+//app.use('/api/auth/login', loginAccountLimiter)
 
 app.use(express.json());
 
