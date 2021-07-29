@@ -27,28 +27,27 @@ export default {
 </script>
 
 <style lang="scss">
-
-* {
-  font-family: 'Baloo Chettan 2', cursive;
-  a {
-    color: #F8F8F8;
-    &:hover {
-      color: #C8D0D0
+  * {
+    font-family: 'Baloo Chettan 2', cursive;
+    a {
+      color: #F8F8F8;
+      &:hover {
+        color: #C8D0D0
+      }
     }
   }
-}
 
-/* set the height to 100% of the viewport */
-#app {
-  background-color: #788898;
-  margin: 0;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  max-width: 1920px;
-}
-main {
-  flex: 1;
-}
+  /* set the height to 100% of the viewport */
+  #app {
+    background-color: #788898;
+    margin: 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
+    max-width: 1920px;
+  }
+  main {
+    flex: 1;
+  }
 </style>

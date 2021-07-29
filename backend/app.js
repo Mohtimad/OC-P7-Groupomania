@@ -13,11 +13,11 @@ app.use((req, res, next) => {
   
 //const createAccountLimiter = rateLimit({
 //  windowMs: 60 * 60 * 1000,
-//  max: 10,
+//  max: 1,
 //  message:
 //    "Too many accounts created from this IP, please try again after an hour"
 //});
-//app.use('/api/auth/signup', createAccountLimiter)
+//app.use('/api/auth/register', createAccountLimiter)
 //
 //const loginAccountLimiter = rateLimit({
 //  windowMs: 5 * 60 * 1000,
@@ -26,6 +26,9 @@ app.use((req, res, next) => {
 //    "Too many connection attempts from this IP address, please try again after five minutes"
 //});
 //app.use('/api/auth/login', loginAccountLimiter)
+
+const db = require("./models");
+db.sequelize.sync();
 
 app.use(express.json());
 

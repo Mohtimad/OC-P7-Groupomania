@@ -1,12 +1,12 @@
 <template>
     <nav id="nav">
-        <span v-if="$store.state.isLoged">
+        <span v-if="$store.state.isLogged">
             <router-link to="/">Accueil</router-link> |
-            <a href="#">{{ $store.state.username }}</a> | 
-            <router-link to="/logout"><span @click="logout">Déconnexion</span></router-link>
+            <router-link to="/">{{ $store.state.user.username }}</router-link> | 
+            <a class="logout-button" @click="logout">Déconnexion</a>
         </span>
         <span v-else>
-            <router-link to="/signup">S'inscrire</router-link> |
+            <router-link to="/register">S'inscrire</router-link> |
             <router-link to="/login">Se connecter</router-link>
         </span>
     </nav>
@@ -15,11 +15,14 @@
 <script>
 export default {
   name: 'Nav',
+  computed : {
+  },
   methods: {
-    logout() {
-        this.$store.state.isLoged = false
+    async logout (){
+      this.$store.state.isLogged = false
+      this.$router.push('/login')
     }
-  }
+  },
 }
 
 </script>
@@ -31,7 +34,12 @@ export default {
         justify-content: flex-end;
         transform: skewX(45deg);
     }
-    #userNameLink {
-      color: white;
+    .logout-button {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .router-link-exact-active {
+      color: #8ed8e6;
+      font-weight: 700;
     }
 </style>
