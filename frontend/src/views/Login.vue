@@ -14,7 +14,7 @@
             <label for="password">Mot de Passe</label>
             <input id="password" type="password" v-model="registerForm.password" />
           </div>
-          <button @click="login" type="submit" :disabled="submitDisabled">Valider</button>
+          <button @click="login" type="button" :disabled="submitDisabled">Valider</button>
           <p v-if="alertError" id="alert">{{ alertMsg }}</p>
          </div>
     </form>
@@ -56,7 +56,7 @@ export default {
         if (this.registerForm.email && !regexEmail.test(this.registerForm.email)) {
           this.alertMsg += "E-mail incorrect\n" }
         if (this.registerForm.password && !regexPassword.test(this.registerForm.password)) {
-          this.alertMsg += "Mot de Passe incorrect\n( Min. 8 caractères avec maj. minuscule chiffre et caractères spécial" }
+          this.alertMsg += "Mot de Passe Syntaxe\nMin. 8 caractères\n+ Majuscule, Minuscule\nChiffre et Caractère" }
         }
     },
     login() {
@@ -74,8 +74,12 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+            this.submitDisabled = true
+            this.registerForm.email = ""
+            this.registerForm.password = ""
             this.alertMsg = err
             this.alertError = true
+
         })
       } else {
         this.alertError = true
@@ -86,35 +90,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .login {
-    border-radius: 30px;
-    color: #F8F8F8;
-    margin: auto;
-    margin-top: 40px;
-    max-width: 500px;
-    min-height: 300px;
-    background-color: #607888;
-    border: solid #284048;
-    border-width: 4px 8px;
-    form {
-      text-align: center;
-      margin: auto;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-    }
-    .input {
-    display: flex;
-    flex-direction: column;
-    }
-    button {
-      margin-top: 20px;
-    }
-    #alert {
-      font-size: .8rem;
-      font-weight: bold;
-      white-space: pre-line;
-      color: #742e2e;
-    }
-  }
+  @import "../sass/auth.scss";
 </style>

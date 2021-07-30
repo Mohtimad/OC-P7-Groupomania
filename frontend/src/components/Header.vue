@@ -2,7 +2,9 @@
   <header>
       <div class="banner-line-top">
         <div class="grayLine">
-          <Logo />
+          <div id="logo">
+            <a href="#/"><img src="../assets/logo.png" alt="Logo Groupomania"></a>
+          </div>
         </div>
       </div>
       <div class="banner-line-bottom">
@@ -12,12 +14,10 @@
 </template>
 
 <script>
-import Logo from '../Logo.vue'
-import Nav from '../Nav.vue'
+import Nav from './Nav.vue'
 export default {
   name: 'Header',
   components: {
-    Logo,
     Nav
   }
 }
@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss">
   header {
+    z-index: 9999;
     max-width: 1920px;
     width: 100%;
     overflow: hidden;
@@ -40,12 +41,22 @@ export default {
       background-color: #607888;
       border-bottom: solid #B8B8C0 2px;
       border-top: solid #505050 2px;
+      #logo {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        margin-left: 20px;
+        img {
+            position: absolute;
+            height: 100%;
+        }
+      }
     }
     .banner-line-bottom {
       position: relative;
-        height: 40px;
+        min-height: 40px;
         background-color: #284048;
-        width: 75%;
+        width: 90%;
         transform: skewX(-45deg);
         left: -20px;
         border-radius: 0 0 30px 0;

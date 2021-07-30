@@ -1,40 +1,46 @@
 <template>
   <div id="app">
     <Header />
-    <Main />
+      <main>
+        <router-view/>
+      </main>
     <Footer />
   </div>
 </template>
 
 <script>
-import Header from './components/sections/Header.vue'
-import Main from './components/sections/Main.vue'
-import Footer from './components/sections/Footer.vue'
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Main,
     Footer,
-  },
-  data() {
-    return {
-      login: true
-    }
-  },
+  }
 }
 </script>
 
 <style lang="scss">
   * {
     font-family: 'Baloo Chettan 2', cursive;
-    a {
-      color: #F8F8F8;
-      &:hover {
-        color: #C8D0D0
-      }
+  }
+  a {
+    color: #F8F8F8;
+    &:hover {
+      color: #C8D0D0
     }
+  }
+  p {
+    padding: 0;
+    margin: 0;
+  }
+
+  h1,
+  h2 {
+    text-align: center;
+    color: #F8F8F8;
+    text-shadow: 1px 1px 2px #1f1e1e;
   }
 
   /* set the height to 100% of the viewport */
@@ -49,5 +55,6 @@ export default {
   }
   main {
     flex: 1;
+    overflow: hidden;
   }
 </style>

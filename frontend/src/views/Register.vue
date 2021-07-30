@@ -61,11 +61,11 @@ export default {
         this.alertError = true
         this.alertMsg = ""
         if (this.registerForm.username && !regexUsername.test(this.registerForm.username)) {
-          this.alertMsg += "Nom d'utilisateur incorrect\n" }
+          this.alertMsg += "Nom d'utilisateur (min. 3)\n" }
         if (this.registerForm.email && !regexEmail.test(this.registerForm.email)) {
           this.alertMsg += "E-mail incorrect\n" }
         if (this.registerForm.password && !regexPassword.test(this.registerForm.password)) {
-          this.alertMsg += "Mot de Passe incorrect\n( Min. 8 caractères avec maj. minuscule chiffre et caractères spécial" }
+          this.alertMsg += "Mot de Passe Syntaxe\nMin. 8 + Majuscule, Minuscule\nChiffre et Caractère" }
         }
     },
     register() {
@@ -99,35 +99,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .register {
-    border-radius: 30px;
-    color: #F8F8F8;
-    margin: auto;
-    margin-top: 40px;
-    max-width: 500px;
-    min-height: 300px;
-    background-color: #607888;
-    border: solid #284048;
-    border-width: 4px 8px;
-    form {
-      text-align: center;
-      margin: auto;
-      width: 50%;
-      display: flex;
-      flex-direction: column;
-    }
-    .input {
-    display: flex;
-    flex-direction: column;
-    }
-    button {
-      margin-top: 20px;
-    }
-    #alert {
-      font-size: .8rem;
-      font-weight: bold;
-      white-space: pre-line;
-      color: #742e2e;
-    }
-  }
+  @import "../sass/auth.scss";
 </style>

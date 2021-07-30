@@ -2,7 +2,7 @@
     <nav id="nav">
         <span v-if="$store.state.isLogged">
             <router-link to="/">Accueil</router-link> |
-            <router-link to="/">{{ $store.state.user.username }}</router-link> | 
+            <router-link to="/profile">{{ $store.state.user.username }}</router-link> | 
             <a class="logout-button" @click="logout">Déconnexion</a>
         </span>
         <span v-else>
@@ -18,7 +18,8 @@ export default {
   computed : {
   },
   methods: {
-    async logout (){
+    logout (){
+      if (localStorage.token) { localStorage.removeItem('token'); }
       this.$store.state.isLogged = false
       this.$router.push('/login')
     }
@@ -29,10 +30,11 @@ export default {
 
 <style lang="scss">
     #nav {
-        padding-right: 50px;
+        padding-right: 40px;
         display: flex;
         justify-content: flex-end;
         transform: skewX(45deg);
+        font-size: .9rem;
     }
     .logout-button {
       cursor: pointer;
@@ -40,6 +42,6 @@ export default {
     }
     .router-link-exact-active {
       color: #8ed8e6;
-      font-weight: 700;
+      font-weight: bold;
     }
 </style>

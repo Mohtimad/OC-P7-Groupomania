@@ -5,19 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    api: 'http://localhost:3000/api/',
+    isLogged: false,
     user : {
       id: '',
       username : '',
       token: '',
+      admin: false
     },
-    api: 'http://localhost:3000/api/',
-    isLogged: false,
   },
   mutations: {
-  IS_LOGGED(state, payload) {
-      state.isLogged = payload.data
-      console.log(payload.data)
-  }
   },
   actions: {
   },
