@@ -11,14 +11,14 @@ exports.signup = (req, res, next) => {
     where: { email: req.body.email }
   })
   .then(user => {
-    console.log(user)
     if (!user) {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const newUser = {
           password: hash,
           username: req.body.username,
-          email: req.body.email
+          email: req.body.email,
+          isAdmin: false,
         };
         User.create(newUser)
         .then(() => {
@@ -48,10 +48,11 @@ exports.signup = (req, res, next) => {
             res.status(200).json({
               username: user.dataValues.username,
               id: user.dataValues.id,
+              isAdmin: user.dataValues.isAdmin,
               token: jwt.sign(
                 { userId: user.dataValues.id},
-                `${tokenConfig.secretTokenKey}`,
-                { expiresIn: '15m' }
+                '1E0FF992C079ACF2E5310699E1FAFE45',
+                { expiresIn: '24h' }
               )
             });
           })

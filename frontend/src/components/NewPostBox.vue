@@ -1,33 +1,45 @@
 <template>
-    <div class="newPost">
-      <form>
+      <div class="newPost">
+      <form id="form">
+        <header>
+          <h2>Nouveau message<button @click="isBoxOpen = false" >x</button></h2>
+          
+        </header>
         <div class="imageNewPost">
           <label for="inputPicture"><img v-if="!image" src="../assets/plus_empty.png" alt=""><img v-else :src="image" /></label>
-          <input @change="updatePicture" type="file" id="inputPicture" accept="image/png, image/jpg, image/jpeg">
+          <input name="image" @change="updatePicture" type="file" id="inputPicture" accept="image/png, image/jpg, image/jpeg">
         </div>
         <div class="newInput">
           <label for="title">Titre</label>
-          <input minlength="3" maxlength="30" id="title" type="text" />
+          <input name="title" v-model="title" minlength="3" maxlength="30" id="title" type="text" />
           <label for="comment">Commentaire</label>
-          <input id="comment" type="text">
-          <button>Ajouter</button>
+          <input name="comment" v-model="comment" id="comment" type="text">
+          <div>
+            <button @click="uploadPost" type="button">Ajouter</button>
+          </div>
         </div>
       </form>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'NewPostBox',
+  computed: {
+    ...mapState(['api', 'user', 'isBoxOpen'])
+  },
   data() {
     return {
      image: "",
+     comment: "",
+     title: ""
     }
   },
   methods: {
     createImage(file) {
-      var reader = new FileReader();
-      var vm = this;
+      const reader = new FileReader();
+      const vm = this;
       reader.onload = (e) => {
         vm.image = e.target.result;
       };
@@ -38,7 +50,34 @@ export default {
       if (!file.length) {
         return 
       }
-      this.createImage(file[0]); 
+      this.image = file[0]
+      this.createImage(file[0]);
+    },
+    uploadPost() {
+    let formData = new FormData(document.getElementById("form"))
+    formData.append('userId', this.user.id)
+    formData.append('username', this.user.username)
+     fetch(this.api + "post/", {
+        method: "POST",
+        headers: { 
+            'Accept': 'application/json', 
+            'Authorization': 'Bearer ' + (this.user.token), 
+        },
+        body: formData
+      })
+      .then((res) => {
+          if (res.ok) {
+              return res.json();
+          }
+          throw new Error(res.status);
+      })
+      .then(() => {
+        this.$store.state.isBoxOpen = false;
+        this.$parent.updatePosts()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   },
 }
@@ -59,7 +98,15 @@ export default {
       width: 100%;
       height: 100%;
       background-color: white;
-      opacity: .8;
+      opacity: .3;
+    }
+    header {
+        position: absolute;
+        top: -5px;
+        button {
+          position: absolute;
+          right: 15px;
+          }
     }
     form {
       z-index: 9999;
@@ -70,7 +117,6 @@ export default {
       flex-wrap: wrap;
       padding: 20px;
       max-width: 80%;
-      margin: 50px;
       background-color: #607888;
       border: solid #284048;
       border-width: 4px 8px;

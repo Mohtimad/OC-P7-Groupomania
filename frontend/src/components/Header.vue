@@ -25,10 +25,12 @@ export default {
 
 <style lang="scss">
   header {
+    margin-top: -10px;
     z-index: 9999;
     max-width: 1920px;
     width: 100%;
     overflow: hidden;
+    position: fixed;
     .banner-line-top {
       display: flex;
       flex-direction: column;

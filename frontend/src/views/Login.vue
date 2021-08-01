@@ -2,7 +2,7 @@
   <div class="login">
     <form @keyup="validForm" id="form">
         <h1>Connection</h1>
-        <div v-if="$store.state.isLogged">
+        <div v-if="isLogged">
           <p>Vous êtes déjà connecté !</p>
         </div>
         <div v-else>
@@ -14,7 +14,7 @@
             <label for="password">Mot de Passe</label>
             <input id="password" type="password" v-model="registerForm.password" />
           </div>
-          <button @click="login" type="button" :disabled="submitDisabled">Valider</button>
+          <button  @click="login" type="button" :disabled="submitDisabled">Valider</button>
           <p v-if="alertError" id="alert">{{ alertMsg }}</p>
          </div>
     </form>
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-const axios = require('axios');
 import { mapState } from 'vuex'
 export default {
   name: "Login",
@@ -56,20 +55,34 @@ export default {
         if (this.registerForm.email && !regexEmail.test(this.registerForm.email)) {
           this.alertMsg += "E-mail incorrect\n" }
         if (this.registerForm.password && !regexPassword.test(this.registerForm.password)) {
-          this.alertMsg += "Mot de Passe Syntaxe\nMin. 8 caractères\n+ Majuscule, Minuscule\nChiffre et Caractère" }
+          this.alertMsg += "Mot de Passe incorrect\nMin. 8 + [a-z] + [A-Z] + [0-9] + [!/?% ...]" }
         }
     },
     login() {
-      if (!this.$store.state.isLogged) {
-        axios.post(this.api + "auth/login", this.registerForm)
+      if (!this.isLogged) {
+        fetch(this.api + "auth/login", {
+                method: "POST",
+                headers: { 
+                    'Accept': 'application/json', 
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(this.registerForm)
+            })
         .then((res) => {
-          console.log(res.status)
-          if (res.status != 200) { throw new Error(res.statusText) }
-          this.$store.state.user.username = res.data.username;
-          this.$store.state.user.id = res.data.id;
-          this.$store.state.user.token = res.data.token;
+                if (res.ok) {
+                    return res.json();
+                }
+                throw new Error(res.status);
+        })
+        .then((res) => {
           this.$store.state.isLogged = true;
-          localStorage.setItem('token', JSON.stringify({token: res.data.token}))
+          let localStorageData = {
+            token: res.token,
+            username: res.username,
+            id: res.id,
+            isAdmin: res.isAdmin
+          }
+          localStorage.setItem('data', JSON.stringify(localStorageData))
           this.$router.push('/')
         })
         .catch((err) => {

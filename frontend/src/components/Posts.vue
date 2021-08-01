@@ -1,28 +1,41 @@
 <template>
-  <div class="posts">
+  <div :id="thePost.id" class="posts">
     <div class="setting">
-        <button>Commenter</button>
-        <button>Modifier</button>
-        <button>Supprimer</button>
+        <button @click="$store.state.isBoxOpen = true">Commenter</button>
+        <span v-if="user.isAdmin === 1 || thePost.id == user.id">
+            <button>Modifier</button>
+        </span>
+        <span v-if="user.isAdmin === 1 || thePost.id == user.id">
+            <button>Supprimer</button>
+        </span>
     </div>
     <section>
         <div class="pictureBlock">
-            <img src="https://www.meillandrichardier.com/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/4/7/4745-tournesol_fleur_g_ante-to-pm144137.jpg" alt="">
+            <img :src="thePost.imgURL" alt="">
         </div>
             <div class="comment-block">
-                <p class="title">Titre du poste <span class="author">De Mohtimad</span></p>
-                <div class="comment"><cite><span class="user-name">Username : </span>Commentaire d'un utilisateur ! !</cite></div>
-                <div class="comment"><cite><span class="user-name">Username : </span>Commentaire d'un utilisateur rtg er t zrt gz er gze rg er gz erg z erg ze rg qsd vze rg  gz ergzergzerg d gzergrg! !</cite></div>
-                <div class="comment"><cite><span class="user-name">Username : </span>Commentaire d'un utilisateur rtg er t zrt gz er gzergzerg d gzergrg! !</cite></div>
-                <div class="comment"><cite><span class="user-name">Username : </span>Commentaire d'un utilisateur rtg er t zrt gz er gze rg er gzrg qsd vze rg  gz ergzergzerg d gzergrg! !</cite></div>
+                <p class="title">{{ thePost.title }} <span class="author">De {{ thePost.username }}</span></p>
+                <div v-for="item in allComments" :key="item">
+                    <div v-if="thePost.id == item.postId" class="comment"><cite><span class="user-name">{{item.c_username}} </span>: {{item.comment}}</cite></div>
+                </div>
+                <NewPostBox />
             </div>
       </section>
   </div>
 </template>
 
 <script>
+import NewPostBox from '../components/NewPostBox.vue'
+import { mapState } from 'vuex'
 export default {
+    components : {
+        NewPostBox
+    },
+  props: ['thePost','allComments'],
   name: 'Posts',
+  computed: {
+    ...mapState(['user'])
+  },
 }
 </script>
 
@@ -49,7 +62,7 @@ export default {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100%;
+            max-height: 500px;
             width: 30%;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.3);
@@ -68,7 +81,7 @@ export default {
             border-radius: 10px;
             overflow: hidden;
             width: 60%;
-            height: 300px;
+            max-height: 500px;
             overflow-y: scroll;
             .title {
                 color: white;

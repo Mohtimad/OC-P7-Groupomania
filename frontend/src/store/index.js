@@ -7,11 +7,12 @@ export default new Vuex.Store({
   state: {
     api: 'http://localhost:3000/api/',
     isLogged: false,
+    isBoxOpen: false,
     user : {
-      id: '',
-      username : '',
-      token: '',
-      admin: false
+      token: `${localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")).token : null}`,
+      id: `${localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")).id : null}`,
+      username : `${localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")).username : ''}`,
+      isAdmin: `${localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")).isAdmin : 0}`
     },
   },
   mutations: {

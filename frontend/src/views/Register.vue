@@ -2,7 +2,7 @@
   <div class="register">
     <form @keyup="validForm" id="form">
         <h1>Inscription</h1>
-        <div v-if="$store.state.isLogged">
+        <div v-if="isLogged">
           <p>Vous êtes déjà connecté !</p>
         </div>
         <div v-else>
@@ -18,7 +18,7 @@
             <label for="password">Mot de Passe</label>
             <input id="password" type="password" v-model="registerForm.password" />
           </div>
-          <button @click="register" type="submit" :disabled="submitDisabled">Valider</button>
+          <button @click="register" type="button" :disabled="submitDisabled">Valider</button>
           <p v-if="alertError" id="alert">{{ alertMsg }}</p>
          </div>
     </form>
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-const axios = require('axios');
 import { mapState } from 'vuex'
 export default {
   name: "Register",
@@ -61,27 +60,48 @@ export default {
         this.alertError = true
         this.alertMsg = ""
         if (this.registerForm.username && !regexUsername.test(this.registerForm.username)) {
-          this.alertMsg += "Nom d'utilisateur (min. 3)\n" }
+          this.alertMsg += "Nom d'utilisateur incorrect\n" }
         if (this.registerForm.email && !regexEmail.test(this.registerForm.email)) {
           this.alertMsg += "E-mail incorrect\n" }
         if (this.registerForm.password && !regexPassword.test(this.registerForm.password)) {
-          this.alertMsg += "Mot de Passe Syntaxe\nMin. 8 + Majuscule, Minuscule\nChiffre et Caractère" }
+          this.alertMsg += "Mot de Passe incorrect\nMin. 8 + [a-z] + [A-Z] + [0-9] + [!/?% ...]" }
         }
     },
     register() {
-      if (!this.$store.state.isLogged) {
-        axios.post(this.api + "auth/register", this.registerForm)
-        .then((res) => {
-          console.log(res.status)
-          if (res.status != 201) { throw new Error(res.statusText) }
-          console.log(res)
-          axios.post(this.api + "auth/login", this.registerForm)
-          .then((res) => {
-            this.$store.state.user.username = this.registerForm.username;
-            this.$store.state.user.id = res.data.id;
-            this.$store.state.user.token = res.data.token;
+      const reqData = {
+            method: "POST",
+            headers: { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(this.registerForm)
+        }
+      if (!this.isLogged) {
+        fetch(this.api + "auth/register", reqData)
+        .then(function(res) {
+            if (res.ok) {
+                return res.json();
+            }
+            throw new Error(res.status);
+        })
+        .then((data) => {
+          console.log(data)
+          fetch(this.api + "auth/login", reqData)
+          .then(function(res) {
+              if (res.ok) {
+                  return res.json();
+              }
+              throw new Error(res.status);
+          })
+          .then((data) => {
             this.$store.state.isLogged = true;
-            localStorage.setItem('token', JSON.stringify({token: res.data.token}))
+            let localStorageData = {
+              token: data.token,
+              username: data.username,
+              id: data.id,
+              isAdmin : data.isAdmin
+            }
+            localStorage.setItem('data', JSON.stringify(localStorageData))
             this.$router.push('/')
           })
         })

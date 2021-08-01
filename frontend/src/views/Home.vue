@@ -1,32 +1,31 @@
 <template>
   <div class="home">
     <h1>Accueil</h1>
-    <div class="notLogged" v-if="$store.state.isLogged">
+    <div class="notLogged" v-if="!isLogged">
       <p>Vous êtes déconnecté</p>
       <router-link to="/login">→ Page de connexion ←</router-link>
     </div>
     <div v-else>
       <div class="buttons">
-        <button>Rafraichir</button>
-        <button @click="newPostBox = true">Nouveau</button>
+        <button @click="updatePosts">Rafraichir</button>
+        <button @click="$store.state.isBoxOpen = true">Nouveau</button>
       </div>
-      <div v-if="newPostBox">
+      <div v-if="$store.state.isBoxOpen">
         <div class="closePostBox">
-          <button @click="newPostBox = false">Fermer</button>
         </div>
         <NewPostBox />
       </div>
-      <div>
-        <Posts />
-  <Posts />
-  <Posts />
-  <Posts />
+      <div id="allPosts">
+        <div v-for="item in allPosts" :key="item">
+        <Posts :thePost="item" :allComments="commentsData" />
+      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import NewPostBox from '../components/NewPostBox.vue'
 import Posts from '../components/Posts.vue'
 export default {
@@ -37,9 +36,52 @@ export default {
   },
   data() {
     return {
-      newPostBox : false
+      allPosts: '',
+      commentsData: '',
     }
   },
+  computed: {
+    ...mapState(['api', 'isLogged', 'user'])
+  },
+  beforeMount() {
+    this.updatePosts()
+  },
+  methods: {
+  updatePosts() {
+    if (!localStorage.getItem("data")) {
+          this.$store.state.isLogged = false
+          this.$router.push('/login')
+    }
+      const localStorageData = JSON.parse(localStorage.getItem("data"))
+      if (!localStorageData.token || !localStorageData.username || !localStorageData.id) {
+          localStorage.removeItem('data'); 
+          this.$store.state.isLogged = false
+          this.$router.push('/login')
+      }
+    this.$store.state.isLogged = true;
+    fetch(this.api + "post/", {
+        method: "GET",
+        headers: { 
+            'Accept': 'application/json', 
+            'Authorization': 'Bearer ' + (localStorageData.token), 
+        },
+      })
+    .then(function(res) {
+        if (res.ok) {
+        return res.json();
+        }
+        throw new Error(res.status);
+    })
+    .then((data) => {
+      this.allPosts = data.result.allPosts
+      this.commentsData = data.result.allComment
+    })
+    .catch((error) => {
+      this.$store.state.isLogged = false;
+      console.log(error)
+    }) 
+    }
+  }
 }
 </script>
 
@@ -58,5 +100,9 @@ export default {
     .notLogged {
       text-align: center;
       color: #742e2e;
+    }
+    #allPosts {
+      display: flex;
+      flex-direction: column-reverse;
     }
 </style>

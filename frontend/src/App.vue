@@ -36,6 +36,10 @@ export default {
     margin: 0;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   h1,
   h2 {
     text-align: center;
@@ -56,5 +60,6 @@ export default {
   main {
     flex: 1;
     overflow: hidden;
+    margin-top: 80px;
   }
 </style>

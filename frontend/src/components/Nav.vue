@@ -2,7 +2,7 @@
     <nav id="nav">
         <span v-if="$store.state.isLogged">
             <router-link to="/">Accueil</router-link> |
-            <router-link to="/profile">{{ $store.state.user.username }}</router-link> | 
+            <router-link to="/profile">{{ user.username }}</router-link> | 
             <a class="logout-button" @click="logout">Déconnexion</a>
         </span>
         <span v-else>
@@ -13,13 +13,18 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
 export default {
   name: 'Nav',
   computed : {
+    ...mapState(['user','isLogged'])
   },
   methods: {
     logout (){
-      if (localStorage.token) { localStorage.removeItem('token'); }
+      if (localStorage.getItem("data")) {
+        localStorage.removeItem('data');
+      }
       this.$store.state.isLogged = false
       this.$router.push('/login')
     }
