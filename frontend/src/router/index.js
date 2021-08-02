@@ -4,15 +4,40 @@ import Home from '../views/Home.vue'
 import Register from '../views/Register'
 import Login from '../views/Login'
 import Profile from '../views/Profile'
+import store from '../store'
 
 Vue.use(VueRouter)
 
+const authenticate = (to, from, next) => {
+  function logOut() {
+    if (localStorage.getItem("data")) {
+      localStorage.removeItem('data') 
+    }
+    store.state.user.isLogged = false
+    next('/login')
+  }
+  if (!localStorage.getItem("data")) {
+    logOut();
+    return
+  }
+  const localStorageData = JSON.parse(localStorage.getItem("data"));
+  if (!localStorageData.token &&
+      !localStorageData.username &&
+      !localStorageData.id &&
+      typeof localStorageData.isAdmin === 'undefined') {
+    logOut();
+    return
+  } 
+  store.state.user.id = localStorageData.id;
+  store.state.user.username = localStorageData.username;
+  store.state.user.token = localStorageData.token;
+  store.state.user.isAdmin = localStorageData.isAdmin;
+  store.state.user.isLogged = true;
+  next()
+  return
+}
+
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
   {
     path: '/register',
     name: "Register",
@@ -24,9 +49,17 @@ const routes = [
     component: Login,
   },
   {
+    path: '/',
+    name: 'Home',
+    component: Home,
+    beforeEnter: authenticate,
+  },
+  
+  {
     path: '/profile',
-    name: Profile,
+    name: 'Profile',
     component: Profile,
+    beforeEnter: authenticate,
   }
 ]
 const router = new VueRouter({

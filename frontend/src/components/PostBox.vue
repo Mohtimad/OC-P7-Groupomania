@@ -2,20 +2,19 @@
       <div class="newPost">
       <form id="form">
         <header>
-          <h2>Nouveau message<button @click="isBoxOpen = false" >x</button></h2>
-          
+          <h2>{{box.titleBox}}<button type="button" @click="$store.state.box.isOpen = false" >x</button></h2>
         </header>
         <div class="imageNewPost">
-          <label for="inputPicture"><img v-if="!image" src="../assets/plus_empty.png" alt=""><img v-else :src="image" /></label>
-          <input name="image" @change="updatePicture" type="file" id="inputPicture" accept="image/png, image/jpg, image/jpeg">
+          <label for="inputPicture"><img :src="box.imageURL" /></label>
+          <input v-if="box.imageInputActive" name="image" @change="updatePicture" type="file" id="inputPicture" accept="image/png, image/jpg, image/jpeg">
         </div>
         <div class="newInput">
           <label for="title">Titre</label>
-          <input name="title" v-model="title" minlength="3" maxlength="30" id="title" type="text" />
-          <label for="comment">Commentaire</label>
-          <input name="comment" v-model="comment" id="comment" type="text">
+          <input :disabled="!box.titleActive" name="title" v-model="box.title" minlength="3" maxlength="30" id="title" type="text" />
+          <label v-if="box.commentActive" for="comment">Commentaire</label>
+          <input v-if="box.commentActive" name="comment" v-model="box.comment" id="comment" type="text">
           <div>
-            <button @click="uploadPost" type="button">Ajouter</button>
+            <button @click="submitData" type="button">Valider</button>
           </div>
         </div>
       </form>
@@ -27,21 +26,14 @@ import { mapState } from 'vuex'
 export default {
   name: 'NewPostBox',
   computed: {
-    ...mapState(['api', 'user', 'isBoxOpen'])
-  },
-  data() {
-    return {
-     image: "",
-     comment: "",
-     title: ""
-    }
+    ...mapState(['api', 'user', 'isBoxOpen', "box"])
   },
   methods: {
     createImage(file) {
       const reader = new FileReader();
       const vm = this;
       reader.onload = (e) => {
-        vm.image = e.target.result;
+        vm.box.imageURL = e.target.result;
       };
       reader.readAsDataURL(file)
     },
@@ -50,20 +42,16 @@ export default {
       if (!file.length) {
         return 
       }
-      this.image = file[0]
       this.createImage(file[0]);
     },
-    uploadPost() {
-    let formData = new FormData(document.getElementById("form"))
-    formData.append('userId', this.user.id)
-    formData.append('username', this.user.username)
-     fetch(this.api + "post/", {
-        method: "POST",
-        headers: { 
-            'Accept': 'application/json', 
-            'Authorization': 'Bearer ' + (this.user.token), 
-        },
-        body: formData
+    uploadPost(formData) {
+      fetch(this.api.url + '/post' + this.$store.state.api.routeServer, {
+          method: this.$store.state.api.method,
+          headers: { 
+              'Accept': 'application/json', 
+              'Authorization': 'Bearer ' + (this.$store.state.user.token), 
+          },
+          body: formData
       })
       .then((res) => {
           if (res.ok) {
@@ -72,13 +60,21 @@ export default {
           throw new Error(res.status);
       })
       .then(() => {
-        this.$store.state.isBoxOpen = false;
-        this.$parent.updatePosts()
+          this.$store.state.isBoxOpen = false;
+          this.$parent.updateWallPosts()
       })
       .catch((err) => {
-        console.log(err)
+          console.log(err)
       })
-    }
+    },
+    submitData() {
+    let formData = new FormData(document.getElementById("form"))
+    formData.append('userId', this.user.id)
+    formData.append('username', this.user.username)
+    formData.append('postId', this.box.postIdSelected)
+    this.uploadPost(formData)
+    this.$store.state.box.isOpen = false;
+    },
   },
 }
 </script>
@@ -143,6 +139,7 @@ export default {
         img {
           width: 100%;
           height: 100%;
+          cursor: pointer;
         }
         #inputPicture {
           display: none;

@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
           password: hash,
           username: req.body.username,
           email: req.body.email,
-          isAdmin: false,
+          isAdmin: true,
         };
         User.create(newUser)
         .then(() => {

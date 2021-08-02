@@ -2,10 +2,7 @@
   <div class="login">
     <form @keyup="validForm" id="form">
         <h1>Connection</h1>
-        <div v-if="isLogged">
-          <p>Vous êtes déjà connecté !</p>
-        </div>
-        <div v-else>
+        <div>
           <div class="input">
             <label for="email">E-mail</label>
             <input id="email" type="email" v-model="registerForm.email" />
@@ -37,7 +34,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['api', 'isLogged'])
+    ...mapState(['api', 'user'])
   },
   components: {
   }, 
@@ -59,8 +56,8 @@ export default {
         }
     },
     login() {
-      if (!this.isLogged) {
-        fetch(this.api + "auth/login", {
+      if (!this.user.isLogged) {
+        fetch(this.api.url + "/auth/login", {
                 method: "POST",
                 headers: { 
                     'Accept': 'application/json', 
@@ -75,7 +72,11 @@ export default {
                 throw new Error(res.status);
         })
         .then((res) => {
-          this.$store.state.isLogged = true;
+          this.$store.state.user.isLogged = true;
+          this.$store.state.user.username = res.username;
+          this.$store.state.user.id = res.id;
+          this.$store.state.user.token = res.token;
+          this.$store.state.user.isAdmin = res.isAdmin;
           let localStorageData = {
             token: res.token,
             username: res.username,
@@ -87,11 +88,11 @@ export default {
         })
         .catch((err) => {
           console.log(err)
-            this.submitDisabled = true
-            this.registerForm.email = ""
-            this.registerForm.password = ""
-            this.alertMsg = err
-            this.alertError = true
+          this.submitDisabled = true
+          this.registerForm.email = ""
+          this.registerForm.password = ""
+          this.alertMsg = err
+          this.alertError = true
 
         })
       } else {

@@ -2,10 +2,7 @@
   <div class="register">
     <form @keyup="validForm" id="form">
         <h1>Inscription</h1>
-        <div v-if="isLogged">
-          <p>Vous êtes déjà connecté !</p>
-        </div>
-        <div v-else>
+        <div>
           <div class="input">
             <label for="username">Nom d'utilisateur</label>
             <input id="username" type="text" v-model="registerForm.username" />
@@ -42,7 +39,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['api', 'isLogged'])
+    ...mapState(['api', 'user'])
   },
   components: {
   }, 
@@ -76,30 +73,34 @@ export default {
             },
             body: JSON.stringify(this.registerForm)
         }
-      if (!this.isLogged) {
-        fetch(this.api + "auth/register", reqData)
+      if (!this.user.isLogged) {
+        fetch(this.api.url + "/auth/register", reqData)
         .then(function(res) {
             if (res.ok) {
                 return res.json();
             }
             throw new Error(res.status);
         })
-        .then((data) => {
-          console.log(data)
-          fetch(this.api + "auth/login", reqData)
+        .then((res) => {
+          console.log(res)
+          fetch(this.api.url + "/auth/login", reqData)
           .then(function(res) {
               if (res.ok) {
                   return res.json();
               }
               throw new Error(res.status);
           })
-          .then((data) => {
-            this.$store.state.isLogged = true;
+          .then((res) => {
+            this.$store.state.user.isLogged = true;
+            this.$store.state.user.id = res.id;
+            this.$store.state.user.username = res.username;
+            this.$store.state.user.token = res.token;
+            this.$store.state.user.isAdmin = res.isAdmin;
             let localStorageData = {
-              token: data.token,
-              username: data.username,
-              id: data.id,
-              isAdmin : data.isAdmin
+              token: res.token,
+              username: res.username,
+              id: res.id,
+              isAdmin : res.isAdmin
             }
             localStorage.setItem('data', JSON.stringify(localStorageData))
             this.$router.push('/')

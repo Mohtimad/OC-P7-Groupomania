@@ -1,42 +1,51 @@
 <template>
-  <div :id="thePost.id" class="posts">
+  <div :id="'post-id-'+thePost.id" class="posts">
     <div class="setting">
-        <button @click="$store.state.isBoxOpen = true">Commenter</button>
-        <span v-if="user.isAdmin === 1 || thePost.id == user.id">
-            <button>Modifier</button>
+        <button type="button" :value="thePost.id" @click="commentPostBoxSettings">Commenter</button>
+        <span v-if="user.isAdmin === 1 || thePost.userId == user.id">
+            <button type="button" :value="thePost.id" @click="editPostBoxSettings">Modifier</button>
         </span>
-        <span v-if="user.isAdmin === 1 || thePost.id == user.id">
-            <button>Supprimer</button>
+        <span v-if="user.isAdmin === 1 || thePost.userId == user.id">
+            <button type="button" :value="thePost.id" @click="deletePostBoxSettings">Supprimer</button>
         </span>
     </div>
     <section>
-        <div class="pictureBlock">
+        <div class="picture-block">
             <img :src="thePost.imgURL" alt="">
         </div>
             <div class="comment-block">
-                <p class="title">{{ thePost.title }} <span class="author">De {{ thePost.username }}</span></p>
-                <div v-for="item in allComments" :key="item">
-                    <div v-if="thePost.id == item.postId" class="comment"><cite><span class="user-name">{{item.c_username}} </span>: {{item.comment}}</cite></div>
+                <p class="title">{{ thePost.title }} </p>
+                <div v-for="theComment in allComments[0]" :key="theComment[0]">
+                    <span v-if="thePost.id == theComment.postId" class="author">{{ theComment.author }}</span>
+                    <div v-if="thePost.id == theComment.postId" class="comment"><cite>{{theComment.comment}}</cite></div>
                 </div>
-                <NewPostBox />
             </div>
       </section>
   </div>
 </template>
 
 <script>
-import NewPostBox from '../components/NewPostBox.vue'
+import { Mixin } from '../mixins/boxSettings'
 import { mapState } from 'vuex'
 export default {
-    components : {
-        NewPostBox
+  props: {
+    thePost: {
+        type: Object,
     },
-  props: ['thePost','allComments'],
+    allComments: {
+        type: Array,
+    },
+  },
+  methods: {
+    
+},
   name: 'Posts',
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'box'])
   },
+  mixins: [Mixin],
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -58,11 +67,12 @@ export default {
         .setting {
             text-align: center;
         }
-        .pictureBlock {
+        .picture-block {
             display: flex;
             justify-content: center;
             align-items: center;
             max-height: 500px;
+            min-height: 200px;
             width: 30%;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.3);
@@ -70,7 +80,7 @@ export default {
             padding: 5px;
             margin-top: 10px;
             img {
-                width: 100%;
+                max-width: 100%;
                 height: 100%;
                 object-fit: cover;
                 border-radius: 10px;
@@ -90,7 +100,7 @@ export default {
                 text-transform: uppercase;
             }
             .author {
-                color: #7a7a7a;
+                color: #6e82bb;
                 font-style: italic;
                 font-size: .8rem;
             }
@@ -103,12 +113,6 @@ export default {
                 font-size: 0.9rem;
                 color: #ffffff;
             }
-            .user-name {
-                font-style: italic; 
-                font-weight: bold;
-                color: #6e82bb;
-            }
-
         }
     }
 </style>

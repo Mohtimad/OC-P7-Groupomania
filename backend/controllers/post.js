@@ -28,19 +28,33 @@ exports.getPosts = (req, res, next) => {
   Post.findAll()
     .then((allPosts) => {
       Comment.findAll({
-        attributes: [['username', 'c_username'], 'postId', 'comment'], 
+        attributes: ['author', 'postId', 'comment'], 
       })
-      .then((allComment) => {
+      .then((allComments) => {
        res.status(200).json({
          result : {
           allPosts: allPosts,
-          allComment: allComment
+          allComments: allComments
           }
-         })
         })
+      })
     })
     .catch(error => res.status(400).json({ error }));
 };
+
+exports.addComment = (req, res, next) => {
+  const newComment = {
+    username: req.body.username,
+    postId: req.body.postId,
+    comment: req.body.comment,
+  };
+  console.log(req)
+  Comment.create(newComment)
+  .then(() => {
+    res.status(201).json({ message: 'Comment created !' });
+  })
+  .catch(error => res.status(500).json({ error }));
+}
 
 exports.createPost = (req, res, next) => {
   const newPost = {
@@ -53,10 +67,9 @@ exports.createPost = (req, res, next) => {
   .then((result) => {
     const newComment = {
       comment: req.body.comment,
-      username : req.body.username,
+      author : req.body.username,
       postId: result.dataValues.id
     }
-    console.log(newComment)
     Comment.create(newComment)
     .then(() => {
       console.log(result)
@@ -66,33 +79,32 @@ exports.createPost = (req, res, next) => {
   .catch(error => res.status(500).json({ error }));
 };
 
-//exports.modifySauce = (req, res, next) => {
-//  Sauce.findOne({ _id: req.params.id })
-//  .then(sauce => {
-//    checkIfAuthor(req.headers.authorization, sauce.userId);
-//    const filename = sauce.imageUrl.split('/images/')[1];
-//    const sauceObject = req.file ?
-//      {
-//        ...JSON.parse(req.body.sauce),
-//        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-//      } : { ...req.body };
-//      sauceObject.heat = !sauceObject.heat || sauceObject.heat < minHeat || sauceObject.heat > maxHeat ? 1 : sauceObject.heat;
-//      if (sauceObject.imageUrl) {
-//        fs.unlink(`images/${filename}`, (err) => {
-//          if (err) throw err;
-//          console.log(`deleted images/${filename}`);
-//        });
-//      }
-//    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-//      .then(() => {
-//        console.log('Item edited by userId ' + sauce.userId)
-//        res.status(200).json({ message: 'Item changed!'})
-//      })
-//      .catch(error => res.status(400).json({ error }));
-//  })
-//  .catch(error => res.status(500).json({ error : 'Invalid user ID'}));
-//};
-//
+exports.modifyPost = (req, res, next) => {
+  Post.findOne({ id: req.body.postId })
+  .then(post => {
+    const filename = sauce.imageUrl.split('/images/')[1];
+    let postObject = req.file ?
+      {
+        ...req.body,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+      } : { ...req.body };
+      sauceObject.heat = !sauceObject.heat || sauceObject.heat < minHeat || sauceObject.heat > maxHeat ? 1 : sauceObject.heat;
+      if (sauceObject.imageUrl) {
+        fs.unlink(`images/${filename}`, (err) => {
+          if (err) throw err;
+          console.log(`deleted images/${filename}`);
+        });
+      }
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+      .then(() => {
+        console.log('Item edited by userId ' + sauce.userId)
+        res.status(200).json({ message: 'Item changed!'})
+      })
+      .catch(error => res.status(400).json({ error }));
+  })
+  .catch(error => res.status(500).json({ error : 'Invalid user ID'}));
+};
+
 //exports.deleteSauce = (req, res, next) => {
 //  Sauce.findOne({ _id: req.params.id })
 //    .then(sauce => {

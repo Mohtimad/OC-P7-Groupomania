@@ -1,23 +1,21 @@
 <template>
   <div class="home">
     <h1>Accueil</h1>
-    <div class="notLogged" v-if="!isLogged">
+    <div class="notLogged" v-if="!user.isLogged">
       <p>Vous êtes déconnecté</p>
       <router-link to="/login">→ Page de connexion ←</router-link>
     </div>
     <div v-else>
       <div class="buttons">
-        <button @click="updatePosts">Rafraichir</button>
-        <button @click="$store.state.isBoxOpen = true">Nouveau</button>
+        <button type="button" @click="newPostBoxSettings">Nouveau</button>
+        <button type="button" @click="updateWallPosts">Rafraichir</button>
       </div>
-      <div v-if="$store.state.isBoxOpen">
-        <div class="closePostBox">
-        </div>
-        <NewPostBox />
+      <div v-if="box.isOpen">
+        <PostBox />
       </div>
       <div id="allPosts">
-        <div v-for="item in allPosts" :key="item">
-        <Posts :thePost="item" :allComments="commentsData" />
+        <div v-for="(thePost, index) in allPosts[0]" :key="index">
+        <Posts :thePost="thePost" :allComments="allComments" />
       </div>
       </div>
     </div>
@@ -25,62 +23,53 @@
 </template>
 
 <script>
+import { Mixin } from '../mixins/boxSettings'
 import { mapState } from 'vuex'
-import NewPostBox from '../components/NewPostBox.vue'
+import PostBox from '../components/PostBox.vue'
 import Posts from '../components/Posts.vue'
 export default {
   name: 'Home',
+  mixins: [Mixin],
   components: {
-    NewPostBox,
+    PostBox,
     Posts
+  },
+  computed: {
+    ...mapState(['api', 'user', 'box'])
   },
   data() {
     return {
       allPosts: '',
-      commentsData: '',
+      allComments: '',
     }
-  },
-  computed: {
-    ...mapState(['api', 'isLogged', 'user'])
   },
   beforeMount() {
-    this.updatePosts()
+    this.updateWallPosts()
   },
   methods: {
-  updatePosts() {
-    if (!localStorage.getItem("data")) {
-          this.$store.state.isLogged = false
-          this.$router.push('/login')
-    }
-      const localStorageData = JSON.parse(localStorage.getItem("data"))
-      if (!localStorageData.token || !localStorageData.username || !localStorageData.id) {
-          localStorage.removeItem('data'); 
-          this.$store.state.isLogged = false
-          this.$router.push('/login')
-      }
-    this.$store.state.isLogged = true;
-    fetch(this.api + "post/", {
-        method: "GET",
-        headers: { 
-            'Accept': 'application/json', 
-            'Authorization': 'Bearer ' + (localStorageData.token), 
-        },
+    updateWallPosts() {
+      fetch(this.api.url + "/post" + '/', {
+          method: "GET",
+          headers: { 
+              'Accept': 'application/json', 
+              'Authorization': 'Bearer ' + (this.user.token), 
+          },
+        })
+      .then(function(res) {
+          if (res.ok) {
+          return res.json();
+          }
+          throw new Error(res.status);
       })
-    .then(function(res) {
-        if (res.ok) {
-        return res.json();
-        }
-        throw new Error(res.status);
-    })
-    .then((data) => {
-      this.allPosts = data.result.allPosts
-      this.commentsData = data.result.allComment
-    })
-    .catch((error) => {
-      this.$store.state.isLogged = false;
-      console.log(error)
-    }) 
-    }
+      .then((data) => {
+        this.allPosts = [data.result.allPosts]
+        this.allComments = [data.result.allComments]
+      })
+      .catch((error) => {
+        this.$store.state.user.isLogged = false;
+        console.log(error)
+      }) 
+    },
   }
 }
 </script>
