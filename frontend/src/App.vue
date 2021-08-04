@@ -1,27 +1,30 @@
 <template>
   <div id="app">
-    <Header />
+    <HeaderBlock />
+    <div v-if="boxPost.value != 'closed'"><DialogBoxPost /></div>
       <main>
         <router-view/>
       </main>
-    <Footer />
+    <FooterBlock />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import DialogBoxPost from './components/DialogBoxPost'
+import HeaderBlock from './components/HeaderBlock.vue'
+import FooterBlock from './components/FooterBlock.vue'
 
 import { mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    Header,
-    Footer,
+    HeaderBlock,
+    FooterBlock,
+    DialogBoxPost
   },  
   computed: {
-    ...mapState(['box'])
+    ...mapState(['boxPost'])
   },
 }
 </script>
@@ -65,6 +68,5 @@ export default {
   main {
     flex: 1;
     overflow: hidden;
-    margin-top: 80px;
   }
 </style>

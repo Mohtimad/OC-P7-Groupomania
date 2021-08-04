@@ -1,8 +1,8 @@
 <template>
-    <nav id="nav">
+    <nav id="nav-bar">
         <span v-if="user.isLogged">
             <router-link to="/">Accueil</router-link> |
-            <router-link to="/profile">{{ user.username }}</router-link> | 
+            <router-link to="/profil">{{ user.username }}</router-link> | 
             <a class="logout-button" @click="logout">Déconnexion</a>
         </span>
         <span v-else>
@@ -16,7 +16,7 @@
 
 import { mapState } from 'vuex'
 export default {
-  name: 'Nav',
+  name: 'NavBar',
   computed : {
     ...mapState(['user'])
   },
@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style lang="scss">
-    #nav {
+    #nav-bar {
         padding-right: 40px;
         display: flex;
         justify-content: flex-end;

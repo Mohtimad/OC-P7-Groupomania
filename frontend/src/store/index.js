@@ -6,9 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     api: {
-      url: 'http://localhost:3000/api',
-      routeServer: '/',
-      method: 'POST',
+      url: 'http://localhost:3000/api'
     },
     user : {
       isLogged: false,
@@ -17,17 +15,10 @@ export default new Vuex.Store({
       username : null,
       isAdmin: 0
     },
-    box : {
-      isOpen: false,
-      imageInputActive : true,
-      titleActive : true,
-      commentActive: true,
-      titleOfBox: 'The Box',
-      title: '',
-      comment: '',
-      imageURL: '',
-      postIdSelected: 0,
+    boxPost : {
+      value: 'closed',
     },
+    targetPostId : 0
   },
   mutations: {
   },

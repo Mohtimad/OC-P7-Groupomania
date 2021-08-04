@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Register from '../views/Register'
 import Login from '../views/Login'
-import Profile from '../views/Profile'
+import Profile from '../views/Profil'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -56,8 +56,8 @@ const routes = [
   },
   
   {
-    path: '/profile',
-    name: 'Profile',
+    path: '/profil',
+    name: 'Profil',
     component: Profile,
     beforeEnter: authenticate,
   }

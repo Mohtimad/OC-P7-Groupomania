@@ -76,13 +76,10 @@ export default {
       if (!this.user.isLogged) {
         fetch(this.api.url + "/auth/register", reqData)
         .then(function(res) {
-            if (res.ok) {
-                return res.json();
-            }
+            if (res.ok) { return res.json(); }
             throw new Error(res.status);
         })
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           fetch(this.api.url + "/auth/login", reqData)
           .then(function(res) {
               if (res.ok) {

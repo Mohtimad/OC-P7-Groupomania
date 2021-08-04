@@ -8,17 +8,17 @@
         </div>
       </div>
       <div class="banner-line-bottom">
-        <Nav />
+        <NavBar />
       </div>
   </header>
 </template>
 
 <script>
-import Nav from './Nav.vue'
+import NavBar from './NavBar.vue'
 export default {
-  name: 'Header',
+  name: 'HeaderBloc',
   components: {
-    Nav
+    NavBar
   }
 }
 </script>
@@ -26,11 +26,10 @@ export default {
 <style lang="scss">
   header {
     margin-top: -10px;
-    z-index: 9999;
+    z-index: 0;
     max-width: 1920px;
     width: 100%;
     overflow: hidden;
-    position: fixed;
     .banner-line-top {
       display: flex;
       flex-direction: column;
