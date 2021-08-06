@@ -54,7 +54,7 @@ exports.login = (req, res, next) => {
             token: jwt.sign(
               { userId: user.dataValues.id },
               '1E0FF992C079ACF2E5310699E1FAFE45',
-              { expiresIn: '24h' }
+              { expiresIn: '1h' }
             )
           });
         })
@@ -65,32 +65,42 @@ exports.login = (req, res, next) => {
 
 exports.edit = (req, res, next) => {
   User.findOne({
-    where: { id: req.body.userId }
+    attributes: ['email','id'],
+    where: { email: req.body.email ? req.body.email : "null" } 
   })
-    .then(user => {
-      if (!user) {
-        return res.status(401).json({ error: 'User not found!' });
-      }
-      bcrypt.compare(req.body.password, user.dataValues.password)
-        .then(valid => {
-          if (!valid) {
-            return res.status(401).json({ error: 'Incorrect password !' });
+  .then(user => {
+    if (!user || user.dataValues.id == req.body.userId) {
+      User.findOne({
+        where: { id: req.body.userId }
+      })
+        .then(user => {
+          if (!user) {
+            return res.status(401).json({ error: 'User not found!' });
           }
-          let newUserData = {
-            username: req.body.username ? req.body.username : user.dataValues.username,
-            email: req.body.email ? req.body.email : user.dataValues.email
-          }
-          User.update(newUserData, { where: { id: req.body.userId } })
-          Comment.update({ author: newUserData.username }, { where: { authorId: req.body.userId } })
-          Post.update({ username: newUserData.username }, { where: { userId: req.body.userId } })
-            .then(() => {
-              console.log('User Data edited by ' + user.dataValues.username)
-              res.status(200).json({ message: 'User changed!' })
+          bcrypt.compare(req.body.password, user.dataValues.password)
+            .then(valid => {
+              if (!valid) {
+                return res.status(401).json({ error: 'Incorrect password !' });
+              }
+              let newUserData = {
+                username: req.body.username ? req.body.username : user.dataValues.username,
+                email: req.body.email ? req.body.email : user.dataValues.email
+              }
+              User.update(newUserData, { where: { id: req.body.userId } })
+              Comment.update({ author: newUserData.username }, { where: { authorId: req.body.userId } })
+              Post.update({ username: newUserData.username }, { where: { userId: req.body.userId } })
+                .then(() => {
+                  console.log('User Data edited by ' + user.dataValues.username)
+                  res.status(200).json({ message: 'User changed!' })
+                })
+                .catch(error => res.status(401).json({ error }));
             })
-            .catch(error => res.status(401).json({ error }));
         })
-    })
-    .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error }));
+      }  else {
+        res.status(409).json({ error: 'Email already used!' })
+      }
+  })
 };
 
 exports.delete = (req, res, next) => {
@@ -122,7 +132,7 @@ exports.delete = (req, res, next) => {
                 })
               }
               Comment.destroy({
-                where: { [Op.or]: [{ authorId: 6 }, { postId: postsId }] }
+                where: { [Op.or]: [{ authorId: req.body.userId }, { postId: postsId }] }
               })
               Post.destroy({ where: { userId: req.body.userId } })
                 .then(() => {

@@ -41,7 +41,7 @@ export default {
   methods: {
     validForm() {
       const regexEmail = /^[a-z0-9!#$ %& '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&' * +/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-      const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;
+      const regexPassword = /(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64}$)/;
       if (regexEmail.test(this.registerForm.email) &&
           regexPassword.test(this.registerForm.password))
           {this.submitDisabled = false; this.alertError = false}

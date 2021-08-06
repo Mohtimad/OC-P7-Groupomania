@@ -18,7 +18,6 @@ export default new Vuex.Store({
     boxPost : {
       value: 'closed',
     },
-    canUpdateWall: false
   },
   mutations: {
   },

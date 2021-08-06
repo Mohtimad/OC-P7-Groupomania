@@ -2,7 +2,7 @@
   <div>
   <!-- for new post -->
     <div v-if="boxPost.value == 'new-post_0'" class="dialog-box-post">
-      <form id="formPost">
+      <form @change="validateForm" @keyup="validateForm" id="formPost">
         <div class="header-box">
           <h2>Nouveau</h2>
         </div>
@@ -10,10 +10,10 @@
           <img :src="image" />
         </div>
         <div class="inputs">
-          <label for="title">Titre</label>
-          <input name="title" id="title" type="text" />
-          <label for="desc">Description</label>
-          <input name="desc" id="desc" type="text" />
+          <label for="title">Titre*</label>
+          <input v-model="title" name="title" id="title" type="text" />
+          <label for="desc">Description*</label>
+          <input v-model="desc" name="desc" id="desc" type="text" />
           <div>
             <input
               name="image"
@@ -24,14 +24,15 @@
             />
             <input
               type="button"
-              value="Choisir une image"
+              value="Choisir une image*"
               onclick="document.getElementById('input-image').click();"
             />
-            <button @click="submitData" type="button">Valider</button>
+            <button @click="submitData" :disabled="formIsNotValid" type="button">Valider</button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
           </div>
+          <p classe="alert"><br />* champ requis</p>
         </div>
       </form>
     </div>
@@ -40,7 +41,7 @@
       v-else-if="boxPost.value.split('_')[0] === 'edit-post'"
       class="dialog-box-post"
     >
-      <form id="formPost">
+      <form @keyup="validateForm" id="formPost">
         <div class="header-box">
           <h2>Modifier</h2>
         </div>
@@ -48,9 +49,9 @@
           <img :src="image" />
         </div>
         <div class="inputs">
-          <label for="title">Titre</label>
+          <label for="title">Titre*</label>
           <input v-model="title" name="title" id="title" type="text" />
-          <label for="desc">Description</label>
+          <label for="desc">Description*</label>
           <input v-model="desc" name="desc" id="desc" type="text" />
           <div>
             <input
@@ -65,11 +66,12 @@
               value="Choisir une image"
               onclick="document.getElementById('input-image').click();"
             />
-            <button @click="submitData" type="button">Valider</button>
+            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
           </div>
+          <p classe="alert"><br />* champ requis</p>
         </div>
       </form>
     </div>
@@ -81,7 +83,7 @@
       <form id="formPost">
         <h2>Supprimer</h2>
         <div>
-          <button @click="submitData" type="button">Valider</button>
+          <button @click="submitData" name="submit" type="button">Valider</button>
           <button type="button" @click="boxPost.value = 'closed'">
             Annuler
           </button>
@@ -93,19 +95,20 @@
       v-else-if="boxPost.value.split('_')[0] == 'new-comment'"
       class="dialog-box-post"
     >
-      <form id="formPost">
+      <form @keyup="validateForm" id="formPost">
         <div class="header-box">
           <h2>Commenter</h2>
         </div>
         <div class="inputs">
-          <label for="comment">Commentaire</label>
+          <label for="comment">Commentaire*</label>
           <input v-model="comment" name="comment" id="comment" type="text" />
           <div>
-            <button @click="submitData" type="button">Valider</button>
+            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
           </div>
+          <p classe="alert"><br />* champ requis</p>
         </div>
       </form>
     </div>
@@ -114,23 +117,24 @@
       v-else-if="boxPost.value.split('_')[0] == 'edit-comment'"
       class="dialog-box-post"
     >
-      <form id="formPost">
+      <form @keyup="validateForm" id="formPost">
         <div class="header-box">
           <h2>Modifier</h2>
         </div>
         <div class="inputs">
-          <label for="comment">Commentaire</label>
+          <label for="comment">Commentaire*</label>
           <input v-model="comment" name="comment" id="comment" type="text" />
           <div>
-            <button @click="submitData" type="button">Valider</button>
+            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
           </div>
+          <p classe="alert"><br />* champ requis</p>
         </div>
       </form>
     </div>
-    <!-- for delete post-->
+    <!-- for delete comment-->
     <div
       v-else-if="boxPost.value.split('_')[0] == 'delete-comment'"
       class="dialog-box-post"
@@ -138,7 +142,7 @@
       <form id="formPost">
         <h2>Supprimer</h2>
         <div>
-          <button @click="submitData" type="button">Valider</button>
+          <button @click="submitData" name="submit" type="button">Valider</button>
           <button type="button" @click="boxPost.value = 'closed'">
             Annuler
           </button>
@@ -154,6 +158,18 @@ export default {
   name: "DialogBoxPost",
   computed: {
     ...mapState(["api", "user", "boxPost"]),
+  },
+  data() {
+    return {
+      image: "",
+      title: "",
+      desc: "",
+      comment: "",
+      apiRoute: "init",
+      apiMethod: "init",
+      eltId: null,
+      formIsNotValid: false
+    };
   },
   beforeMount() {
     const action = this.boxPost.value.split("_")[0];
@@ -197,19 +213,27 @@ export default {
         this.apiRoute = "/comment" + "/" + eltId;
         break;
     }
-  },
-  data() {
-    return {
-      image: "",
-      title: "",
-      desc: "",
-      comment: "",
-      apiRoute: "init",
-      apiMethod: "init",
-      eltId: null,
-    };
+    this.validateForm()
   },
   methods: {
+    validateForm() {
+      const action = this.boxPost.value.split("_")[0];
+      switch (action) {
+        case "new-post":
+          this.image != "" && /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          break;
+        case "edit-post":
+          /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          break;
+        case "new-comment":
+          /(.{1,255})/.test(this.comment) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          break;
+        case "edit-comment":
+          /(.{1,255})/.test(this.comment) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          break;
+      }
+    },
+
     /* Check image */
     createImage(file) {
       const reader = new FileReader();
@@ -245,7 +269,6 @@ export default {
         headers["Accept"] = "application/json, text/plain, */*";
         headers["Content-Type"] = "application/json";
       }
-      console.log(formData);
       fetch(this.api.url + this.apiRoute, {
         method: this.apiMethod,
         headers: headers,
@@ -322,7 +345,6 @@ export default {
       img {
         width: 100%;
         max-height: 100%;
-        cursor: pointer;
       }
     }
     .inputs {

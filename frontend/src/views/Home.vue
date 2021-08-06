@@ -39,9 +39,6 @@ export default {
       allComments: '',
     }
   },
-  created() {
-    this.$on(this.updateWallPosts);
-  },
   mounted() {
     this.updateWallPosts()
   },

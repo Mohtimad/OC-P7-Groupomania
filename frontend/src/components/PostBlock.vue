@@ -28,7 +28,8 @@
     <p class="description">{{ thisPost.desc }}</p>
     <p class="author">
       Par {{ thisPost.username }} le
-      {{ thisPost.createdAt.split("T")[0].split("-").reverse().join("/") }}
+      {{ new Date(thisPost.createdAt).toLocaleDateString("fr-FR") + ' à ' + new Date(thisPost.createdAt).toLocaleTimeString("fr-FR") }}
+
     </p>
     <section class="post">
       <div class="picture-block">
@@ -62,15 +63,11 @@
               <cite
                 :title="
                   'Posté le ' +
-                  thisComment.createdAt
-                    .split('T')[0]
-                    .split('-')
-                    .reverse()
-                    .join('-')
+                  new Date(thisComment.createdAt).toLocaleDateString('fr-FR') + ' à ' + new Date(thisComment.createdAt).toLocaleTimeString('fr-FR')
                 "
                 
-                ><span class="comment-author">{{ thisComment.author }}</span>
-                <span :id="'commantary_' + thisComment.id">: {{ thisComment.comment }}</span></cite
+                ><span class="comment-author">{{ thisComment.author }}: </span>
+                <span :id="'commantary_' + thisComment.id">{{ thisComment.comment }}</span></cite
               >
             </div>
           </div>
@@ -136,7 +133,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 200px;
+      max-height: 400px;
       width: 100%;
       border-radius: 3px;
       background-color: rgba(0, 0, 0, 0.3);
@@ -157,7 +154,7 @@ export default {
       bottom: 0;
       transition: all 500ms ease-in-out;
       &:hover {
-        height: 80%;
+        height: 75%;
         overflow-y: scroll;
       }
       h3 {
