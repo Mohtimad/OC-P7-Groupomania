@@ -27,19 +27,27 @@ exports.addComment = (req, res, next) => {
 
   exports.modifyComment = (req, res, next) => {
     User.findOne({
-      attributes: ['username'], 
+      attributes: ['isAdmin'], 
       where: { id: req.body.userId }
     })
     .then(user => {
-      const newComment = {
-        author: user.dataValues.username,
-        authorId: req.body.userId,
-        postId: req.params.id,
-        comment: req.body.comment, 
-      };
-      Comment.create(newComment)
-        .then(() => {
-          res.status(201).json({ message: 'Comment created !' });
+      Comment.findOne({
+        attributes: ['authorId'], 
+        where: { id: req.params.id }
+      })
+      .then(comment => {
+        if (req.body.userId == comment.dataValues.authorId || user.dataValues.isAdmin == '1' ) {
+          const newComment = {
+            comment: req.body.comment, 
+          };
+          Comment.update(
+            newComment,
+            { where: { id: req.params.id } }
+          )
+          .then(() => {
+            res.status(201).json({ message: 'Comment created !' });
+          })
+        } else {throw new Error('unauthorized')}
       })
     })
     .catch(error => res.status(500).json({ error }));
@@ -47,19 +55,23 @@ exports.addComment = (req, res, next) => {
 
   exports.deleteComment = (req, res, next) => {
     User.findOne({
-      attributes: ['username'], 
+      attributes: ['isAdmin'], 
       where: { id: req.body.userId }
     })
     .then(user => {
-      const newComment = {
-        author: user.dataValues.username,
-        authorId: req.body.userId,
-        postId: req.params.id,
-        comment: req.body.comment, 
-      };
-      Comment.create(newComment)
-        .then(() => {
-          res.status(201).json({ message: 'Comment created !' });
+      Comment.findOne({
+        attributes: ['authorId'], 
+        where: { id: req.params.id }
+      })
+      .then(comment => {
+        if (req.body.userId == comment.dataValues.authorId || user.dataValues.isAdmin == '1' ) {
+          Comment.destroy({
+            where: { id: req.params.id }
+          })
+          .then(() => {
+            res.status(201).json({ message: 'Comment deleted !' });
+          })
+        } else {throw new Error('unauthorized')}
       })
     })
     .catch(error => res.status(500).json({ error }));

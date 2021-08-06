@@ -104,9 +104,14 @@ exports.deletePost = (req, res, next) => {
                 where: { id: req.params.id }
               })
               .then(() => {
-                console.log('Item deleted by userId ' + user.dataValues.username)
-                res.status(200).json({ message: 'Item deleted!'})
-              })
+                Comment.destroy({
+                  where: { postId: req.params.id }
+                })
+                .then(() => {
+                  console.log('Item deleted by userId ' + user.dataValues.username)
+                  res.status(200).json({ message: 'Item deleted!'})
+                  })
+                })
               .catch(error => res.status(400).json({ error })
               );
             });

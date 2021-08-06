@@ -35,10 +35,10 @@ export default {
 
 <style lang="scss">
     #nav-bar {
+      color: white;
         padding-right: 40px;
         display: flex;
         justify-content: flex-end;
-        transform: skewX(45deg);
         font-size: .9rem;
     }
     .logout-button {
@@ -46,7 +46,7 @@ export default {
       text-decoration: underline;
     }
     .router-link-exact-active {
-      color: #8ed8e6;
+      color: #ae2833;
       font-weight: bold;
     }
 </style>

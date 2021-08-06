@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const tokenConfig = require('../token-config')
 
 module.exports = (req, res, next) => {
   try {

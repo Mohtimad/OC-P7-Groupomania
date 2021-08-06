@@ -106,3 +106,4 @@ dist
 backend/images/*.png
 backend/images/*.jpg
 backend/images/*.jpeg
+backend/images/*.gif

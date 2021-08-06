@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <form @keyup="validForm" id="form">
-        <h1>Connection</h1>
+        <h1>Connexion</h1>
         <div>
           <div class="input">
             <label for="email">E-mail</label>

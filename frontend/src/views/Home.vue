@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+  <div v-if="boxPost.value != 'closed'"><DialogBoxPost /></div>
     <h1>Accueil</h1>
     <div class="not-logged" v-if="!user.isLogged">
       <p>Vous êtes déconnecté</p>
@@ -22,10 +23,12 @@
 <script>
 import { mapState } from 'vuex'
 import PostBlock from '../components/PostBlock.vue'
+import DialogBoxPost from '../components/DialogBoxPost.vue'
 export default {
   name: 'Home',
   components: {
-    PostBlock
+    PostBlock,
+    DialogBoxPost
   },
   computed: {
     ...mapState(['api', 'user', 'boxPost'])
@@ -36,7 +39,10 @@ export default {
       allComments: '',
     }
   },
-  beforeMount() {
+  created() {
+    this.$on(this.updateWallPosts);
+  },
+  mounted() {
     this.updateWallPosts()
   },
   methods: {
@@ -57,7 +63,6 @@ export default {
       .then((data) => {
         this.allPosts = [data.result.allPosts]
         this.allComments = [data.result.allComments]
-        console.log(this.allComments)
       })
       .catch((error) => {
         this.$store.state.user.isLogged = false;

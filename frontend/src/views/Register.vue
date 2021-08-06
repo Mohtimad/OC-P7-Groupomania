@@ -50,8 +50,9 @@ export default {
       const regexPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;
       if (regexUsername.test(this.registerForm.username) &&
           regexEmail.test(this.registerForm.email) &&
-          regexPassword.test(this.registerForm.password))
-          {this.submitDisabled = false; this.alertError = false}
+          regexPassword.test(this.registerForm.password)) {
+        this.submitDisabled = false; this.alertError = false
+      }
       else {
         this.submitDisabled = true
         this.alertError = true

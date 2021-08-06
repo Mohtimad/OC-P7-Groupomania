@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <HeaderBlock />
-    <div v-if="boxPost.value != 'closed'"><DialogBoxPost /></div>
       <main>
         <router-view/>
       </main>
@@ -10,7 +9,6 @@
 </template>
 
 <script>
-import DialogBoxPost from './components/DialogBoxPost'
 import HeaderBlock from './components/HeaderBlock.vue'
 import FooterBlock from './components/FooterBlock.vue'
 
@@ -21,7 +19,6 @@ export default {
   components: {
     HeaderBlock,
     FooterBlock,
-    DialogBoxPost
   },  
   computed: {
     ...mapState(['boxPost'])
@@ -32,6 +29,9 @@ export default {
 <style lang="scss">
   * {
     font-family: 'Baloo Chettan 2', cursive;
+  }
+  body {
+    margin: 0;
   }
   a {
     color: #F8F8F8;
@@ -52,21 +52,27 @@ export default {
   h2 {
     text-align: center;
     color: #F8F8F8;
-    text-shadow: 1px 1px 2px #1f1e1e;
+    text-shadow: black 3px 3px 10px;
+    text-transform: uppercase;
+    
   }
 
   /* set the height to 100% of the viewport */
   #app {
-    background-color: #788898;
     margin: 0;
     margin: auto;
     display: flex;
     flex-direction: column;
-    min-height: 98vh;
+    min-height: 100vh;
     max-width: 1920px;
+    background: fixed url("./assets/photo-1588351829783-6edb9bd6af6a.jpeg");
+
   }
   main {
+    padding-top: 80px ;
     flex: 1;
     overflow: hidden;
+    background-color: #595959cd;
+    
   }
 </style>

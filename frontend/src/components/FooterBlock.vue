@@ -1,6 +1,8 @@
 <template>
   <footer>
-
+    <a href="#">Contact</a>
+    <a href="#">Aide</a>
+    <a href="#">Informations</a>
   </footer>
 </template>
 
@@ -13,6 +15,12 @@ export default {
 <style lang="scss">
     footer {
         height: 50px;
-        background-color: #284048;
+        background-color: #181f44;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        a {
+          margin: 0 10px;
+        }
     }
 </style>
