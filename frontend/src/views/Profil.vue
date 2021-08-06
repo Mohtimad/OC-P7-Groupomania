@@ -1,6 +1,10 @@
 <template>
   <div class="profil">
-    <h1>{{ user.username }}#{{user.id > 9 ?  user.id > 99 ? user.id : '0' + user.id : '00' + user.id}}</h1>
+    <h1>
+      {{ user.username }}#{{
+        user.id > 9 ? (user.id > 99 ? user.id : "0" + user.id) : "00" + user.id
+      }}
+    </h1>
     <form id="form-profil" @keyup="checkForm">
       <div class="form-block">
         <h2>Modifier vos données</h2>
@@ -102,7 +106,7 @@ export default {
       }
     },
     submitData(reqMethod, formData) {
-      console.log(formData)
+      console.log(formData);
       fetch(this.api.url + "/auth" + "/", {
         method: reqMethod,
         headers: {
@@ -129,8 +133,8 @@ export default {
             if (formData.username) {
               let localStorageData = JSON.parse(localStorage.getItem("data"));
               this.user.username = this.newUsername;
-              localStorageData.username = this.newUsername,
-              localStorage.setItem("data", JSON.stringify(localStorageData));
+              (localStorageData.username = this.newUsername),
+                localStorage.setItem("data", JSON.stringify(localStorageData));
             }
             this.newUsername = "";
             this.newEmail = "";

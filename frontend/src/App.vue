@@ -1,78 +1,75 @@
 <template>
   <div id="app">
     <HeaderBlock />
-      <main>
-        <router-view/>
-      </main>
+    <main>
+      <router-view />
+    </main>
     <FooterBlock />
   </div>
 </template>
 
 <script>
-import HeaderBlock from './components/HeaderBlock.vue'
-import FooterBlock from './components/FooterBlock.vue'
+import HeaderBlock from "./components/HeaderBlock.vue";
+import FooterBlock from "./components/FooterBlock.vue";
 
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     HeaderBlock,
     FooterBlock,
-  },  
-  computed: {
-    ...mapState(['boxPost'])
   },
-}
+  computed: {
+    ...mapState(["boxPost"]),
+  },
+};
 </script>
 
 <style lang="scss">
-  * {
-    font-family: 'Baloo Chettan 2', cursive;
+* {
+  font-family: "Baloo Chettan 2", cursive;
+}
+body {
+  margin: 0;
+}
+a {
+  color: #f8f8f8;
+  &:hover {
+    color: #c8d0d0;
   }
-  body {
-    margin: 0;
-  }
-  a {
-    color: #F8F8F8;
-    &:hover {
-      color: #C8D0D0
-    }
-  }
-  p {
-    padding: 0;
-    margin: 0;
-  }
+}
+p {
+  padding: 0;
+  margin: 0;
+}
 
-  button {
-    cursor: pointer;
-  }
+button {
+  cursor: pointer;
+}
 
-  h1,
-  h2 {
-    text-align: center;
-    color: #F8F8F8;
-    text-shadow: black 3px 3px 10px;
-    text-transform: uppercase;
-    
-  }
+h1,
+h2 {
+  text-align: center;
+  color: #f8f8f8;
+  text-shadow: black 3px 3px 10px;
+  text-transform: uppercase;
+}
 
-  /* set the height to 100% of the viewport */
-  #app {
-    margin: 0;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    max-width: 1920px;
-    background: fixed url("./assets/photo-1588351829783-6edb9bd6af6a.jpeg");
-
-  }
-  main {
-    padding-top: 80px ;
-    flex: 1;
-    overflow: hidden;
-    background-color: #595959cd;
-    
-  }
+/* set the height to 100% of the viewport */
+#app {
+  margin: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1920px;
+  background: fixed url("./assets/photo-1588351829783-6edb9bd6af6a.jpeg");
+}
+main {
+  padding-top: 80px;
+  flex: 1;
+  overflow: hidden;
+  background-color: #595959cd;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-  <!-- for new post -->
+    <!-- for new post -->
     <div v-if="boxPost.value == 'new-post_0'" class="dialog-box-post">
       <form @change="validateForm" @keyup="validateForm" id="formPost">
         <div class="header-box">
@@ -27,7 +27,13 @@
               value="Choisir une image*"
               onclick="document.getElementById('input-image').click();"
             />
-            <button @click="submitData" :disabled="formIsNotValid" type="button">Valider</button>
+            <button
+              @click="submitData"
+              :disabled="formIsNotValid"
+              type="button"
+            >
+              Valider
+            </button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
@@ -66,7 +72,14 @@
               value="Choisir une image"
               onclick="document.getElementById('input-image').click();"
             />
-            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
+            <button
+              @click="submitData"
+              name="submit"
+              :disabled="formIsNotValid"
+              type="button"
+            >
+              Valider
+            </button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
@@ -83,7 +96,9 @@
       <form id="formPost">
         <h2>Supprimer</h2>
         <div>
-          <button @click="submitData" name="submit" type="button">Valider</button>
+          <button @click="submitData" name="submit" type="button">
+            Valider
+          </button>
           <button type="button" @click="boxPost.value = 'closed'">
             Annuler
           </button>
@@ -103,7 +118,14 @@
           <label for="comment">Commentaire*</label>
           <input v-model="comment" name="comment" id="comment" type="text" />
           <div>
-            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
+            <button
+              @click="submitData"
+              name="submit"
+              :disabled="formIsNotValid"
+              type="button"
+            >
+              Valider
+            </button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
@@ -125,7 +147,14 @@
           <label for="comment">Commentaire*</label>
           <input v-model="comment" name="comment" id="comment" type="text" />
           <div>
-            <button @click="submitData" name="submit" :disabled="formIsNotValid" type="button">Valider</button>
+            <button
+              @click="submitData"
+              name="submit"
+              :disabled="formIsNotValid"
+              type="button"
+            >
+              Valider
+            </button>
             <button type="button" @click="boxPost.value = 'closed'">
               Annuler
             </button>
@@ -142,7 +171,9 @@
       <form id="formPost">
         <h2>Supprimer</h2>
         <div>
-          <button @click="submitData" name="submit" type="button">Valider</button>
+          <button @click="submitData" name="submit" type="button">
+            Valider
+          </button>
           <button type="button" @click="boxPost.value = 'closed'">
             Annuler
           </button>
@@ -168,7 +199,7 @@ export default {
       apiRoute: "init",
       apiMethod: "init",
       eltId: null,
-      formIsNotValid: false
+      formIsNotValid: false,
     };
   },
   beforeMount() {
@@ -213,23 +244,33 @@ export default {
         this.apiRoute = "/comment" + "/" + eltId;
         break;
     }
-    this.validateForm()
+    this.validateForm();
   },
   methods: {
     validateForm() {
       const action = this.boxPost.value.split("_")[0];
       switch (action) {
         case "new-post":
-          this.image != "" && /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          this.image != "" &&
+          /(.{1,32})/.test(this.title) &&
+          /(.{1,255})/.test(this.desc)
+            ? (this.formIsNotValid = false)
+            : (this.formIsNotValid = true);
           break;
         case "edit-post":
-          /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc)
+            ? (this.formIsNotValid = false)
+            : (this.formIsNotValid = true);
           break;
         case "new-comment":
-          /(.{1,255})/.test(this.comment) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          /(.{1,255})/.test(this.comment)
+            ? (this.formIsNotValid = false)
+            : (this.formIsNotValid = true);
           break;
         case "edit-comment":
-          /(.{1,255})/.test(this.comment) ? this.formIsNotValid = false : this.formIsNotValid = true;
+          /(.{1,255})/.test(this.comment)
+            ? (this.formIsNotValid = false)
+            : (this.formIsNotValid = true);
           break;
       }
     },

@@ -8,14 +8,14 @@ export default new Vuex.Store({
     api: {
       url: 'http://localhost:3000/api'
     },
-    user : {
+    user: {
       isLogged: false,
       token: null,
       id: null,
-      username : null,
+      username: null,
       isAdmin: 0
     },
-    boxPost : {
+    boxPost: {
       value: 'closed',
     },
   },

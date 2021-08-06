@@ -11,7 +11,7 @@ Vue.use(VueRouter)
 const authenticate = (to, from, next) => {
   function logOut() {
     if (localStorage.getItem("data")) {
-      localStorage.removeItem('data') 
+      localStorage.removeItem('data')
     }
     store.state.user.isLogged = false
     next('/login')
@@ -22,12 +22,12 @@ const authenticate = (to, from, next) => {
   }
   const localStorageData = JSON.parse(localStorage.getItem("data"));
   if (!localStorageData.token &&
-      !localStorageData.username &&
-      !localStorageData.id &&
-      typeof localStorageData.isAdmin === 'undefined') {
+    !localStorageData.username &&
+    !localStorageData.id &&
+    typeof localStorageData.isAdmin === 'undefined') {
     logOut();
     return
-  } 
+  }
   store.state.user.id = localStorageData.id;
   store.state.user.username = localStorageData.username;
   store.state.user.token = localStorageData.token;
@@ -54,7 +54,7 @@ const routes = [
     component: Home,
     beforeEnter: authenticate,
   },
-  
+
   {
     path: '/profil',
     name: 'Profil',

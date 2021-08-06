@@ -8,19 +8,19 @@
 
 <script>
 export default {
-  name: 'FooterBloc'
-}
+  name: "FooterBloc",
+};
 </script>
 
 <style lang="scss">
-    footer {
-        height: 50px;
-        background-color: #181f44;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        a {
-          margin: 0 10px;
-        }
-    }
+footer {
+  height: 50px;
+  background-color: #181f44;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a {
+    margin: 0 10px;
+  }
+}
 </style>

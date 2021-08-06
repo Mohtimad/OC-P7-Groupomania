@@ -1,122 +1,148 @@
 <template>
   <div class="register">
     <form @keyup="validForm" id="form">
-        <h1>Inscription</h1>
-        <div>
-          <div class="input">
-            <label for="username">Nom d'utilisateur</label>
-            <input id="username" type="text" v-model="registerForm.username" />
-          </div>
-          <div class="input">
-            <label for="email">E-mail</label>
-            <input id="email" type="email" v-model="registerForm.email" />
-          </div>
-          <div class="input">
-            <label for="password">Mot de Passe</label>
-            <input id="password" type="password" v-model="registerForm.password" />
-          </div>
-          <button @click="register" type="button" :disabled="submitDisabled">Valider</button>
-          <p v-if="alertError" id="alert">{{ alertMsg }}</p>
-         </div>
+      <h1>Inscription</h1>
+      <div>
+        <div class="input">
+          <label for="username">Nom d'utilisateur</label>
+          <input id="username" type="text" v-model="registerForm.username" />
+        </div>
+        <div class="input">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" v-model="registerForm.email" />
+        </div>
+        <div class="input">
+          <label for="password">Mot de Passe</label>
+          <input
+            id="password"
+            type="password"
+            v-model="registerForm.password"
+          />
+        </div>
+        <button @click="register" type="button" :disabled="submitDisabled">
+          Valider
+        </button>
+        <p v-if="alertError" id="alert">{{ alertMsg }}</p>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "Register",
-  data () {
+  data() {
     return {
-      registerForm : {
-        username: '',
-        email: '',
-        password: ''
+      registerForm: {
+        username: "",
+        email: "",
+        password: "",
       },
-      submitDisabled : true,
+      submitDisabled: true,
       alertError: false,
       alertMsg: "",
-    }
+    };
   },
   computed: {
-    ...mapState(['api', 'user'])
+    ...mapState(["api", "user"]),
   },
-  components: {
-  }, 
+  components: {},
   methods: {
     validForm() {
-      const regexUsername = /^([a-zA-Z.,'\-àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]{3,32})$/;
-      const regexEmail = /^[a-z0-9!#$ %& '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&' * +/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-      const regexPassword = /(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64}$)/;
-      if (regexUsername.test(this.registerForm.username) &&
-          regexEmail.test(this.registerForm.email) &&
-          regexPassword.test(this.registerForm.password)) {
-        this.submitDisabled = false; this.alertError = false
-      }
-      else {
-        this.submitDisabled = true
-        this.alertError = true
-        this.alertMsg = ""
-        if (this.registerForm.username && !regexUsername.test(this.registerForm.username)) {
-          this.alertMsg += "Nom d'utilisateur incorrect\n" }
-        if (this.registerForm.email && !regexEmail.test(this.registerForm.email)) {
-          this.alertMsg += "E-mail incorrect\n" }
-        if (this.registerForm.password && !regexPassword.test(this.registerForm.password)) {
-          this.alertMsg += "Mot de Passe incorrect\nMin. 8 + [a-z] + [A-Z] + [0-9] + [!/?% ...]" }
+      const regexUsername =
+        /^([a-zA-Z.,'\-àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]{3,32})$/;
+      const regexEmail =
+        /^[a-z0-9!#$ %& '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&' * +/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+      const regexPassword =
+        /(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64}$)/;
+      if (
+        regexUsername.test(this.registerForm.username) &&
+        regexEmail.test(this.registerForm.email) &&
+        regexPassword.test(this.registerForm.password)
+      ) {
+        this.submitDisabled = false;
+        this.alertError = false;
+      } else {
+        this.submitDisabled = true;
+        this.alertError = true;
+        this.alertMsg = "";
+        if (
+          this.registerForm.username &&
+          !regexUsername.test(this.registerForm.username)
+        ) {
+          this.alertMsg += "Nom d'utilisateur incorrect\n";
         }
+        if (
+          this.registerForm.email &&
+          !regexEmail.test(this.registerForm.email)
+        ) {
+          this.alertMsg += "E-mail incorrect\n";
+        }
+        if (
+          this.registerForm.password &&
+          !regexPassword.test(this.registerForm.password)
+        ) {
+          this.alertMsg +=
+            "Mot de Passe incorrect\nMin. 8 + [a-z] + [A-Z] + [0-9] + [!/?% ...]";
+        }
+      }
     },
     register() {
       const reqData = {
-            method: "POST",
-            headers: { 
-                'Accept': 'application/json', 
-                'Content-Type': 'application/json' 
-            },
-            body: JSON.stringify(this.registerForm)
-        }
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.registerForm),
+      };
       if (!this.user.isLogged) {
         fetch(this.api.url + "/auth/register", reqData)
-        .then(function(res) {
-            if (res.ok) { return res.json(); }
-            throw new Error(res.status);
-        })
-        .then(() => {
-          fetch(this.api.url + "/auth/login", reqData)
-          .then(function(res) {
-              if (res.ok) {
-                  return res.json();
-              }
-              throw new Error(res.status);
-          })
-          .then((res) => {
-            this.$store.state.user.isLogged = true;
-            this.$store.state.user.id = res.id;
-            this.$store.state.user.username = res.username;
-            this.$store.state.user.token = res.token;
-            this.$store.state.user.isAdmin = res.isAdmin;
-            let localStorageData = {
-              token: res.token,
-              username: res.username,
-              id: res.id,
-              isAdmin : res.isAdmin
+          .then(function (res) {
+            if (res.ok) {
+              return res.json();
             }
-            localStorage.setItem('data', JSON.stringify(localStorageData))
-            this.$router.push('/')
+            throw new Error(res.status);
           })
-        })
-        .catch((err) => {
-          console.log(err)
-            this.alertMsg = err
-            this.alertError = true
-        })
+          .then(() => {
+            fetch(this.api.url + "/auth/login", reqData)
+              .then(function (res) {
+                if (res.ok) {
+                  return res.json();
+                }
+                throw new Error(res.status);
+              })
+              .then((res) => {
+                this.$store.state.user.isLogged = true;
+                this.$store.state.user.id = res.id;
+                this.$store.state.user.username = res.username;
+                this.$store.state.user.token = res.token;
+                this.$store.state.user.isAdmin = res.isAdmin;
+                let localStorageData = {
+                  token: res.token,
+                  username: res.username,
+                  id: res.id,
+                  isAdmin: res.isAdmin,
+                };
+                localStorage.setItem("data", JSON.stringify(localStorageData));
+                this.$router.push("/");
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            this.alertMsg = err;
+            this.alertError = true;
+          });
       } else {
-        this.alertError = true
-        this.alertMsg = "Vous êtes déjà connecté"}
-    }
-  }
-}
+        this.alertError = true;
+        this.alertMsg = "Vous êtes déjà connecté";
+      }
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-  @import "../sass/auth.scss";
+@import "../sass/auth.scss";
 </style>

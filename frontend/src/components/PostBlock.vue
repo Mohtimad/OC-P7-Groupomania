@@ -28,8 +28,11 @@
     <p class="description">{{ thisPost.desc }}</p>
     <p class="author">
       Par {{ thisPost.username }} le
-      {{ new Date(thisPost.createdAt).toLocaleDateString("fr-FR") + ' à ' + new Date(thisPost.createdAt).toLocaleTimeString("fr-FR") }}
-
+      {{
+        new Date(thisPost.createdAt).toLocaleDateString("fr-FR") +
+        " à " +
+        new Date(thisPost.createdAt).toLocaleTimeString("fr-FR")
+      }}
     </p>
     <section class="post">
       <div class="picture-block">
@@ -63,11 +66,14 @@
               <cite
                 :title="
                   'Posté le ' +
-                  new Date(thisComment.createdAt).toLocaleDateString('fr-FR') + ' à ' + new Date(thisComment.createdAt).toLocaleTimeString('fr-FR')
+                  new Date(thisComment.createdAt).toLocaleDateString('fr-FR') +
+                  ' à ' +
+                  new Date(thisComment.createdAt).toLocaleTimeString('fr-FR')
                 "
-                
                 ><span class="comment-author">{{ thisComment.author }}: </span>
-                <span :id="'commantary_' + thisComment.id">{{ thisComment.comment }}</span></cite
+                <span :id="'commantary_' + thisComment.id">{{
+                  thisComment.comment
+                }}</span></cite
               >
             </div>
           </div>
