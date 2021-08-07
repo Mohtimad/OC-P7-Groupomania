@@ -14,10 +14,11 @@
           name="newUsername"
           id="newUsername"
           type="text"
+          placeholder="Laissez vide pour ignorer"
         />
         <label for="newEmail">E-mail</label>
-        <input v-model="newEmail" name="newEmail" id="newEmail" type="text" />
-        <label for="password1">Confirmer mot de passe</label>
+        <input placeholder="Laissez vide pour ignorer" v-model="newEmail" name="newEmail" id="newEmail" type="text" />
+        <label for="password1">Confirmer mot de passe*</label>
         <input
           v-model="password1"
           name="password1"
@@ -31,11 +32,12 @@
         >
           Modifier
         </button>
+        <p><br />* champ requis</p>
         <p class="alert">{{ alertMsg }}</p>
       </div>
       <div class="form-block delete-block">
         <h2>Supprimer le compte</h2>
-        <label for="password2">Confirmer mot de passe</label>
+        <label for="password2">Confirmer mot de passe*</label>
         <input
           v-model="password2"
           name="password2"
@@ -109,7 +111,6 @@ export default {
     },
     //fetch request
     submitData(reqMethod, formData) {
-      console.log(formData);
       fetch(this.api.url + "/auth" + "/", {
         method: reqMethod,
         headers: {
@@ -123,7 +124,7 @@ export default {
           if (res.ok) {
             return res.json();
           }
-          throw new Error(res.status);
+          throw res.status;
         })
         .then((data) => {
           //if the count is deleted, remove the localstorage and redirect to the login view
@@ -147,11 +148,18 @@ export default {
             this.password1 = "";
             this.password2 = "";
             this.buttonEditDisable = true;
+            this.alertMsg = "Modification confirmé!";
           }
         })
         .catch((err) => {
-          console.log(err);
-          this.alertMsg = err;
+            console.log('Error : ' +err);
+            if (err === 409) {
+              this.alertMsg = "E-mail déja utilisé !";
+            } else if (err === 429) {
+              this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
+            } else {
+              this.alertMsg = 'Erreur :' + err;
+            }
         });
     },
     //call with the edit button
@@ -202,7 +210,7 @@ export default {
       text-align: center;
       margin-bottom: 10px;
     }
-    label {
+    label, p{
       color: white;
     }
     .alert {

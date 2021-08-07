@@ -7,9 +7,11 @@ mySQL
 
 ## Installation
 1. Cloner le projet.
-2. Démarrer le serveur: `cd backend/` `npm install` `node server`
-3. Dans un nouveau terminal: `cd frontend/` `npm install` `npm run serve`
-4. Rendez-vous sur http://localhost:8080/
+2. Dans le dossier backend/ : `cd backend/`
+3. Configurer le "db.config"
+4. Démarrer le serveur: `npm install` `node server`
+5. Dans un nouveau terminal: `cd frontend/` `npm install` `npm run serve`
+6. Rendez-vous sur http://localhost:8080/
 
 ## Points de vigilance
 - L'API utilisée devra impérativement respecter des pratiques de code sécurisé et respecter les standards WCAG.

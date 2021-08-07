@@ -109,7 +109,7 @@ export default {
             if (res.ok) {
               return res.json();
             }
-            throw new Error(res.status);
+            throw res.status;
           })
           .then(() => {
             //login (if response is ok)
@@ -118,7 +118,7 @@ export default {
                 if (res.ok) {
                   return res.json();
                 }
-                throw new Error(res.status);
+                throw res.status;
               })
               .then((res) => {
                 //update vuex var and localstorage and redirect to Home view
@@ -138,8 +138,14 @@ export default {
               });
           })
           .catch((err) => {
-            console.log(err);
-            this.alertMsg = err;
+            console.log('Error :' + err);
+            if (err === 409) {
+              this.alertMsg = "E-mail déja utilisé !";
+            } else if (err === 429) {
+              this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
+            } else {
+              this.alertMsg = 'Erreur :' + err;
+            }
             this.alertError = true;
           });
       } else {

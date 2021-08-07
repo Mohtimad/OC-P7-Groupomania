@@ -328,8 +328,7 @@ export default {
           }
           throw new Error(res.status);
         })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.boxPost.value = "closed";
           this.$parent.updateWallPosts();
         })

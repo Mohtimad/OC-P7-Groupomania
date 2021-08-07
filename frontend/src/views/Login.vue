@@ -92,7 +92,7 @@ export default {
             if (res.ok) {
               return res.json();
             }
-            throw new Error(res.status);
+            throw res.status;
           })
           .then((res) => {
             //update vuex var and localstorage and redirect to Home view
@@ -111,11 +111,17 @@ export default {
             this.$router.push("/");
           })
           .catch((err) => {
-            console.log(err);
+            console.log('Error : ' +err);
+            if (err === 401) {
+              this.alertMsg = "Mot de passe ou identifiant incorrect!";
+            } else if (err === 429) {
+              this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
+            } else {
+              this.alertMsg = 'Erreur :' + err;
+            }
             this.submitDisabled = true;
             this.registerForm.email = "";
             this.registerForm.password = "";
-            this.alertMsg = err;
             this.alertError = true;
           });
       } else {
