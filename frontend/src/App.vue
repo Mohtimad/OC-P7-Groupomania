@@ -27,6 +27,8 @@ export default {
 </script>
 
 <style lang="scss">
+//only global style
+
 * {
   font-family: "Baloo Chettan 2", cursive;
 }

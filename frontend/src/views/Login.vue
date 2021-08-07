@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <form @keyup="validForm" id="form">
+    <form @keyup="validForm" @keyup.enter="login" id="form">
       <h1>Connexion</h1>
       <div>
         <div class="input">
@@ -44,6 +44,8 @@ export default {
   },
   components: {},
   methods: {
+    //called each time the form is modified
+    //activate or deactivate the validate button
     validForm() {
       const regexEmail =
         /^[a-z0-9!#$ %& '*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&' * +/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -74,8 +76,10 @@ export default {
         }
       }
     },
+    //fetch 'onClick login'
     login() {
-      if (!this.user.isLogged) {
+      if (this.submitDisabled) {return}
+      if (!this.user.isLogged ) {
         fetch(this.api.url + "/auth/login", {
           method: "POST",
           headers: {
@@ -91,6 +95,7 @@ export default {
             throw new Error(res.status);
           })
           .then((res) => {
+            //update vuex var and localstorage and redirect to Home view
             this.$store.state.user.isLogged = true;
             this.$store.state.user.username = res.username;
             this.$store.state.user.id = res.id;

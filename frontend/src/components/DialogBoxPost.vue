@@ -198,10 +198,11 @@ export default {
       comment: "",
       apiRoute: "init",
       apiMethod: "init",
-      eltId: null,
+      eltId: null, //the id of the selected element
       formIsNotValid: false,
     };
   },
+  //prepare the dialog box before being mounted on the DOM.
   beforeMount() {
     const action = this.boxPost.value.split("_")[0];
     const eltId = this.boxPost.value.split("_")[1];
@@ -247,35 +248,40 @@ export default {
     this.validateForm();
   },
   methods: {
+    //activate or deactivate the "validate" button depending on the box template used.
     validateForm() {
       const action = this.boxPost.value.split("_")[0];
       switch (action) {
         case "new-post":
+          //required "img, desc, title"
           this.image != "" &&
-          /(.{1,32})/.test(this.title) &&
-          /(.{1,255})/.test(this.desc)
+          /^(.{1,64})$/.test(this.title) &&
+          /^(.{1,255})$/.test(this.desc)
             ? (this.formIsNotValid = false)
             : (this.formIsNotValid = true);
           break;
         case "edit-post":
-          /(.{1,32})/.test(this.title) && /(.{1,255})/.test(this.desc)
+          //required "desc, title"
+          /^(.{1,64})$/.test(this.title) && /^(.{1,255})$/.test(this.desc)
             ? (this.formIsNotValid = false)
             : (this.formIsNotValid = true);
           break;
         case "new-comment":
-          /(.{1,255})/.test(this.comment)
+          //required "comment"
+          /^(.{1,255})$/.test(this.comment)
             ? (this.formIsNotValid = false)
             : (this.formIsNotValid = true);
           break;
         case "edit-comment":
-          /(.{1,255})/.test(this.comment)
+          //required "comment too"
+          /^(.{1,255})$/.test(this.comment)
             ? (this.formIsNotValid = false)
             : (this.formIsNotValid = true);
           break;
       }
     },
 
-    /* Check image */
+    //to generate the image selected by the user
     createImage(file) {
       const reader = new FileReader();
       const vm = this;
@@ -295,6 +301,7 @@ export default {
 
     /* Submit */
     submitData() {
+      if (this.submitDisabled) {return}
       let headers = { Authorization: "Bearer " + this.user.token };
       const action = this.boxPost.value.split("_")[0];
       let formData = {};
@@ -336,6 +343,7 @@ export default {
 
 <style scoped lang="scss">
 .dialog-box-post {
+  // z-index + before: prevents unwanted clicks on the DOM
   z-index: 100;
   position: fixed;
   display: flex;
@@ -344,7 +352,6 @@ export default {
   max-width: 1290px;
   left: 50%;
   top: 15%;
-  /* Opac background */
   &::before {
     content: "";
     position: fixed;

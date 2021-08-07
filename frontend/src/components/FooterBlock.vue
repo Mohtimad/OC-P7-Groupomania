@@ -1,5 +1,6 @@
 <template>
   <footer>
+    <!-- dummy link -->
     <a href="#">Contact</a>
     <a href="#">Aide</a>
     <a href="#">Informations</a>
@@ -8,7 +9,7 @@
 
 <script>
 export default {
-  name: "FooterBloc",
+  name: "FooterBlock",
 };
 </script>
 

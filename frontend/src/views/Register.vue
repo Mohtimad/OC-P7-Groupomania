@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <form @keyup="validForm" id="form">
+    <form @keyup="validForm"  @keyup.enter="register" id="form">
       <h1>Inscription</h1>
       <div>
         <div class="input">
@@ -49,6 +49,8 @@ export default {
   },
   components: {},
   methods: {
+    //called each time the form is modified
+    //activate or deactivate the validate button
     validForm() {
       const regexUsername =
         /^([a-zA-Z.,'\-àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]{3,32})$/;
@@ -88,7 +90,10 @@ export default {
         }
       }
     },
+    //fetch 'onClick login'
     register() {
+      if (this.submitDisabled) {return}
+      //declaration of request data, to avoid repetition, (register and login)
       const reqData = {
         method: "POST",
         headers: {
@@ -98,6 +103,7 @@ export default {
         body: JSON.stringify(this.registerForm),
       };
       if (!this.user.isLogged) {
+        //register
         fetch(this.api.url + "/auth/register", reqData)
           .then(function (res) {
             if (res.ok) {
@@ -106,6 +112,7 @@ export default {
             throw new Error(res.status);
           })
           .then(() => {
+            //login (if response is ok)
             fetch(this.api.url + "/auth/login", reqData)
               .then(function (res) {
                 if (res.ok) {
@@ -114,6 +121,7 @@ export default {
                 throw new Error(res.status);
               })
               .then((res) => {
+                //update vuex var and localstorage and redirect to Home view
                 this.$store.state.user.isLogged = true;
                 this.$store.state.user.id = res.id;
                 this.$store.state.user.username = res.username;

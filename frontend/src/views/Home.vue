@@ -41,10 +41,13 @@ export default {
       allComments: "",
     };
   },
-  mounted() {
+  beforeMount() {
+    //retrieves information before being mounted
     this.updateWallPosts();
   },
   methods: {
+    //to retrieve information from posts to the server and send the information to the Posts component
+    //is also called by the DialogBoxPost component when it is removed from the DOM
     updateWallPosts() {
       fetch(this.api.url + "/post" + "/", {
         method: "GET",

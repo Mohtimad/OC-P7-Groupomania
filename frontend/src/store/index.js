@@ -16,6 +16,7 @@ export default new Vuex.Store({
       isAdmin: 0
     },
     boxPost: {
+      //is read to select the template of the DialogBoxPost component
       value: 'closed',
     },
   },

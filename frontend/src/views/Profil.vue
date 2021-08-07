@@ -67,12 +67,14 @@ export default {
       buttonEditDisable: true,
       newUsername: "",
       newEmail: "",
-      password1: "",
-      password2: "",
+      password1: "", //for the edition part
+      password2: "", //for the account deletion part
       alertMsg: "",
     };
   },
   methods: {
+    //called each time the form is modified
+    //activate or deactivate the validate button
     checkForm() {
       const regexUsername =
         /^[a-zA-Z.,'\-àáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ]*.{3,20}$/;
@@ -105,6 +107,7 @@ export default {
         }
       }
     },
+    //fetch request
     submitData(reqMethod, formData) {
       console.log(formData);
       fetch(this.api.url + "/auth" + "/", {
@@ -122,7 +125,8 @@ export default {
           }
           throw new Error(res.status);
         })
-        .then(() => {
+        .then((data) => {
+          //if the count is deleted, remove the localstorage and redirect to the login view
           if (reqMethod == "DELETE") {
             this.$store.state.user.isLogged = false;
             if (localStorage.getItem("data")) {
@@ -130,16 +134,19 @@ export default {
             }
             this.$router.push("/login");
           } else {
+            //otherwise if the username has been changed, update the DOM and localstorage
             if (formData.username) {
               let localStorageData = JSON.parse(localStorage.getItem("data"));
-              this.user.username = this.newUsername;
-              (localStorageData.username = this.newUsername),
+              this.user.username = data.username;
+              (localStorageData.username = data.username),
                 localStorage.setItem("data", JSON.stringify(localStorageData));
             }
+            //reset var
             this.newUsername = "";
             this.newEmail = "";
             this.password1 = "";
             this.password2 = "";
+            this.buttonEditDisable = true;
           }
         })
         .catch((err) => {
@@ -147,6 +154,7 @@ export default {
           this.alertMsg = err;
         });
     },
+    //call with the edit button
     editAccount() {
       const reqMethod = "PUT";
       let formData = {
@@ -161,6 +169,7 @@ export default {
       }
       this.submitData(reqMethod, formData);
     },
+    //call with the delete button
     deleteAccount() {
       const reqMethod = "DELETE";
       let formData = {

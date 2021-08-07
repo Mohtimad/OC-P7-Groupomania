@@ -8,6 +8,8 @@ import store from '../store'
 
 Vue.use(VueRouter)
 
+//for home and profil
+//checks the localstorage if the data is available, otherwise returns to the login page
 const authenticate = (to, from, next) => {
   function logOut() {
     if (localStorage.getItem("data")) {

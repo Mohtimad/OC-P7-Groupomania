@@ -35,6 +35,7 @@ exports.addComment = (req, res, next) => {
         where: { id: req.params.id }
       })
       .then(comment => {
+        //check if author or admin
         if (req.body.userId == comment.dataValues.authorId || user.dataValues.isAdmin == '1' ) {
           const newComment = {
             comment: req.body.comment, 
@@ -63,6 +64,7 @@ exports.addComment = (req, res, next) => {
         where: { id: req.params.id }
       })
       .then(comment => {
+        //check if author or admin
         if (req.body.userId == comment.dataValues.authorId || user.dataValues.isAdmin == '1' ) {
           Comment.destroy({
             where: { id: req.params.id }

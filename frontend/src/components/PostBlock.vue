@@ -1,4 +1,5 @@
 <template>
+  <!-- all the posts in loop, will have a unique id 'post-id_XX' -->
   <div :id="'post-id_' + thisPost.id" class="post-block">
     <div class="setting">
       <button
@@ -87,6 +88,7 @@
 import { mapState } from "vuex";
 export default {
   name: "PostBlock",
+  //retrieves posts and comments from parents.
   props: {
     thisPost: {
       type: Object,
@@ -116,10 +118,14 @@ export default {
   .description {
     text-align: left;
     color: white;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .title {
     margin: 0;
     text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .author {
     color: #6e82bb;
