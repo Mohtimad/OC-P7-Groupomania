@@ -14,10 +14,10 @@
           name="newUsername"
           id="newUsername"
           type="text"
-          placeholder="Laissez vide pour ignorer"
+          placeholder="À laisser vide pour ignorer"
         />
         <label for="newEmail">E-mail</label>
-        <input placeholder="Laissez vide pour ignorer" v-model="newEmail" name="newEmail" id="newEmail" type="text" />
+        <input placeholder="À laisser vide pour ignorer" v-model="newEmail" name="newEmail" id="newEmail" type="text" />
         <label for="password1">Confirmer mot de passe*</label>
         <input
           v-model="password1"
