@@ -53,7 +53,7 @@ exports.login = (req, res, next) => {
             isAdmin: user.dataValues.isAdmin,
             token: jwt.sign(
               { userId: user.dataValues.id },
-              '1E0FF992C079ACF2E5310699E1FAFE45',
+              'MY_SECRET_TOKEN',
               { expiresIn: '1h' }
             )
           });

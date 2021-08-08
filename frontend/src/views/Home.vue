@@ -7,6 +7,7 @@
       <router-link to="/login">→ Page de connexion ←</router-link>
     </div>
     <div v-else>
+      <p class="intro-text">Bienvenue sur le réseau social de Groupomania!<br />Vous pouvez partager et commenter des images avec vos collègues!</p>
       <div class="buttons">
         <button type="button" @click="boxPost.value = 'new-post_0'">
           Nouveau
@@ -76,6 +77,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.intro-text {
+  text-align: center;
+  margin: auto;
+  margin-bottom: 30px;
+  padding: 10px;
+  color: white;
+  max-width: max-content;
+  text-shadow: black 1px 1px 1px;
+  font-weight: bold;
+  overflow-wrap: break-word;
+}
 .buttons {
   text-align: center;
   margin: 10px;

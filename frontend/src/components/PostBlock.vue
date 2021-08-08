@@ -135,6 +135,7 @@ export default {
   }
   .setting {
     text-align: center;
+    margin-bottom: 15px;
   }
   .post {
     display: flex;
@@ -145,7 +146,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      max-height: 400px;
+      max-height: 200px;
       width: 100%;
       border-radius: 3px;
       background-color: rgba(0, 0, 0, 0.3);
@@ -154,7 +155,7 @@ export default {
       margin: 10px 0;
       img {
         max-width: 100%;
-        max-height: 100%;
+        height: 100%;
       }
     }
     .comment-block {
@@ -166,7 +167,7 @@ export default {
       bottom: 0;
       transition: all 500ms ease-in-out;
       &:hover {
-        height: 75%;
+        height: 70%;
         overflow-y: scroll;
       }
       h3 {

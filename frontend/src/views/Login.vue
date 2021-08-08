@@ -18,7 +18,7 @@
         <button @click="login" type="button" :disabled="submitDisabled">
           Valider
         </button>
-        <p v-if="alertError" id="alert">{{ alertMsg }}</p>
+        <p v-if="alertError" id="alert"><br />{{ alertMsg }}</p>
       </div>
     </form>
   </div>

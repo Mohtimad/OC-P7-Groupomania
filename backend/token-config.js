@@ -1,1 +1,0 @@
-exports.secretTokenKey = '1E0FF992C079ACF2E5310699E1FAFE45';

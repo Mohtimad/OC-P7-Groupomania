@@ -157,6 +157,10 @@ export default {
               this.alertMsg = "E-mail déja utilisé !";
             } else if (err === 429) {
               this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
+            } else if (err === 401) {
+              this.alertMsg = "Mot de passe incorrect";
+            } else if (err === 500) {
+              this.alertMsg = "Erreur serveur!";
             } else {
               this.alertMsg = 'Erreur :' + err;
             }
