@@ -83,10 +83,12 @@ export default {
   margin-bottom: 30px;
   padding: 10px;
   color: white;
-  max-width: max-content;
   text-shadow: black 1px 1px 1px;
   font-weight: bold;
   overflow-wrap: break-word;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-bottom: solid #ffffffaa 4px;
+  border-top: solid #ffffffaa 4px;
 }
 .buttons {
   text-align: center;

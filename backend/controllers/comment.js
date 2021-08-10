@@ -47,7 +47,7 @@ exports.addComment = (req, res, next) => {
           .then(() => {
             res.status(201).json({ message: 'Comment created !' });
           })
-        } else {throw new Error('unauthorized')}
+        } else {res.status(401).json({ error: 'unauthorized' })}
       })
     })
     .catch(error => res.status(500).json({ error }));
@@ -72,7 +72,7 @@ exports.addComment = (req, res, next) => {
           .then(() => {
             res.status(201).json({ message: 'Comment deleted !' });
           })
-        } else {throw new Error('unauthorized')}
+        } else {res.status(401).json({ error: 'unauthorized' })}
       })
     })
     .catch(error => res.status(500).json({ error }));

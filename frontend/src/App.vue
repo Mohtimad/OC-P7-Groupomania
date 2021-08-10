@@ -30,7 +30,7 @@ export default {
 //only global style
 
 * {
-  font-family: "Baloo Chettan 2", cursive;
+  font-family: 'Noto Sans', sans-serif;
 }
 body {
   margin: 0;
@@ -55,7 +55,7 @@ h2 {
   text-align: center;
   color: #f8f8f8;
   text-shadow: black 3px 3px 10px;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 /* set the height to 100% of the viewport */

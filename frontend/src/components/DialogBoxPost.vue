@@ -326,14 +326,17 @@ export default {
           if (res.ok) {
             return res.json();
           }
-          throw new Error(res.status);
+          throw res.status;
         })
         .then(() => {
           this.boxPost.value = "closed";
           this.$parent.updateWallPosts();
         })
         .catch((err) => {
-          console.log(err);
+          console.log('Erreur: '+ err);
+          if (err === 401){
+            alert('Error: ' + err + ' unauthorized')
+          }
         });
     },
   },

@@ -77,12 +77,12 @@ exports.modifyPost = (req, res, next) => {
                 console.log('Item edited by ' + user.dataValues.username)
                 res.status(200).json({ message: 'Item changed!' })
               })
-              .catch(error => res.status(401).json({ error }));
+              .catch(error => res.status(500).json({ error }));
 
           } else { throw new Error('unauthorized') }
 
         })
-        .catch(error => res.status(500).json({ error: 'Invalid user ID' }));
+        .catch(error => res.status(401).json({ error: 'Invalid user ID' }));
     })
 };
 
