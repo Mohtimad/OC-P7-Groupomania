@@ -1,13 +1,13 @@
 <template>
   <nav id="nav-bar">
     <span v-if="user.isLogged">
-      <router-link to="/">Accueil</router-link> |
-      <router-link to="/profil">{{ user.username }}</router-link> |
-      <a class="logout-button" @click="logout">Déconnexion</a>
+      <router-link class="router-link" to="/">Accueil</router-link>
+      <router-link class="router-link" to="/profil">{{ user.username }}</router-link>
+      <a class="logout-button router-link" @click="logout">Déconnexion</a>
     </span>
     <span v-else>
-      <router-link to="/register">S'inscrire</router-link> |
-      <router-link to="/login">Se connecter</router-link>
+      <router-link class="router-link" to="/register">S'inscrire</router-link>
+      <router-link class="router-link" to="/login">Se connecter</router-link>
     </span>
   </nav>
 </template>
@@ -33,18 +33,20 @@ export default {
 
 <style lang="scss">
 #nav-bar {
-  color: white;
   padding-right: 40px;
   display: flex;
   justify-content: flex-end;
   font-size: 0.9rem;
+}
+.router-link {
+  padding: 0 5px;
 }
 .logout-button {
   cursor: pointer;
   text-decoration: underline;
 }
 .router-link-exact-active {
-  color: #ae2833;
+  color: #C9BCEB;
   font-weight: bold;
 }
 </style>

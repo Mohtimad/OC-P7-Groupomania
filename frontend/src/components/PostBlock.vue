@@ -43,7 +43,7 @@
         />
       </div>
       <div class="comment-block">
-        <h3>Commentaire ⇈</h3>
+        <h3>Commentaire</h3>
         <div
           v-for="(thisComment, index) in allComments[0]"
           :key="(thisComment[0], index)"
@@ -128,7 +128,7 @@ export default {
     overflow: hidden;
   }
   .author {
-    color: #6e82bb;
+    color: #dcdcdc;
     font-style: italic;
     font-size: 0.8rem;
     text-align: right;
@@ -159,17 +159,13 @@ export default {
       }
     }
     .comment-block {
-      background-color: #181f44d9;
-      position: absolute;
       overflow: hidden;
       width: 100%;
       height: 30px;
       bottom: 0;
       transition: all 500ms ease-in-out;
-      &:hover {
-        height: 70%;
-        overflow-y: scroll;
-      }
+      height: 200px;
+      overflow-y: scroll;
       h3 {
         font-size: 1rem;
         color: #fff;
@@ -184,7 +180,6 @@ export default {
         font-size: 0.8rem;
       }
       .comment-author {
-        text-decoration: underline;
         padding-right: 5px;
         font-weight: bold;
         font-style: initial;
@@ -198,11 +193,6 @@ export default {
         color: #ffffff;
         overflow: hidden;
         border-radius: 20px;
-        &:hover {
-          .buttons {
-            opacity: 1;
-          }
-        }
         cite {
           font-size: 0.8rem;
           margin-bottom: 20px;
@@ -212,14 +202,14 @@ export default {
           right: 10px;
           top: 0;
           text-align: center;
-          opacity: 0;
           border-radius: 25px;
           overflow: hidden;
           transition-delay: 200ms;
           transition: all 300ms ease-in-out;
           button {
+            font-size: .7rem;
             font-weight: bold;
-            color: #a93e30;
+            color: #c9bceb;
             background-color: transparent;
             border: none;
           }

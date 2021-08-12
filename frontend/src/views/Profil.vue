@@ -17,7 +17,13 @@
           placeholder="À laisser vide pour ignorer"
         />
         <label for="newEmail">E-mail</label>
-        <input placeholder="À laisser vide pour ignorer" v-model="newEmail" name="newEmail" id="newEmail" type="text" />
+        <input
+          placeholder="À laisser vide pour ignorer"
+          v-model="newEmail"
+          name="newEmail"
+          id="newEmail"
+          type="text"
+        />
         <label for="password1">Confirmer mot de passe*</label>
         <input
           v-model="password1"
@@ -32,9 +38,11 @@
         >
           Modifier
         </button>
-        <p><br />* champ requis</p>
+        <p><br />(*) champ requis</p>
         <p class="alert">{{ alertMsg }}</p>
       </div>
+    </form>
+    <form>
       <div class="form-block delete-block">
         <h2>Supprimer le compte</h2>
         <label for="password2">Confirmer mot de passe*</label>
@@ -152,18 +160,18 @@ export default {
           }
         })
         .catch((err) => {
-            console.log('Error : ' +err);
-            if (err === 409) {
-              this.alertMsg = "E-mail déja utilisé !";
-            } else if (err === 429) {
-              this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
-            } else if (err === 401) {
-              this.alertMsg = "Mot de passe incorrect";
-            } else if (err === 500) {
-              this.alertMsg = "Erreur serveur!";
-            } else {
-              this.alertMsg = 'Erreur :' + err;
-            }
+          console.log("Error : " + err);
+          if (err === 409) {
+            this.alertMsg = "E-mail déja utilisé !";
+          } else if (err === 429) {
+            this.alertMsg = "Trop de tentatives! Réessayez plus tard!";
+          } else if (err === 401) {
+            this.alertMsg = "Mot de passe incorrect";
+          } else if (err === 500) {
+            this.alertMsg = "Erreur serveur!";
+          } else {
+            this.alertMsg = "Erreur :" + err;
+          }
         });
     },
     //call with the edit button
@@ -214,7 +222,8 @@ export default {
       text-align: center;
       margin-bottom: 10px;
     }
-    label, p{
+    label,
+    p {
       color: white;
     }
     .alert {
@@ -226,7 +235,10 @@ export default {
   }
   .delete-block {
     h2 {
-      color: #c44c4c;
+      border-top: solid red 3px;
+      border-bottom: solid red 3px;
+      padding: 5px;
+      color: #ffffff;
     }
   }
 }
