@@ -146,7 +146,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      max-height: 200px;
+      height: 200px;
       width: 100%;
       border-radius: 3px;
       background-color: rgba(0, 0, 0, 0.3);
