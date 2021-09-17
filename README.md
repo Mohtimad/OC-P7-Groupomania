@@ -30,11 +30,11 @@ Pour faire fonctionner le projet, vous devez installer :
 - l’accès à un forum où les salariés publient des contenus multimédias doit être présent ;
 - l’accès à un forum où les salariés publient des textes doit être présent ;
 - les utilisateurs doivent pouvoir facilement repérer les dernières participations des employés ;
-- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre
+- le ou la chargé-e de communication Groupomania doit pouvoir modérer les interactions entre salariés;
 
 ## Technologies à utiliser
 - Une base de données relationnelles qui se manipule avec le langage SQL pour le stockage de données.
 - Utiliser un framework Front-End au choix, le projet doit être codé en Javascript, donc pas le framework Symfony.
-- 
+ 
 ## Points de vigilance
 - L'API utilisée devra impérativement respecter des pratiques de code sécurisé et respecter les standards WCAG.
