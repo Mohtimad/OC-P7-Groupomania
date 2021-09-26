@@ -1,3 +1,5 @@
+![localhost_8080_](https://user-images.githubusercontent.com/71820021/134806208-fc6d96bd-2c52-4cab-8d3d-a13fcb185d68.png)
+
 # Groupomania - Projet 07
 Pour faire fonctionner le projet, vous devez installer :
 
